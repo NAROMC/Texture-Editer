@@ -151,6 +151,131 @@ select{background:#242934;color:var(--text);border:1px solid var(--border);borde
  .topbar{overflow-x:auto}.logo{margin-right:0}.workspace{grid-template-columns:190px 1fr}
  .parambar{gap:8px}.sidebar{min-width:190px}
 }
+
+/* =========================================================
+   Responsive UI: PC / Tablet / Smartphone
+   既存の編集ロジック・ID・レイアウト構造を変更せず、
+   画面幅に応じて操作領域とキャンバス領域だけを最適化。
+   ========================================================= */
+button,
+select,
+input[type="range"]{touch-action:manipulation}
+
+/* タブレット～小型ノート: 固定幅を減らし、各バーを横スクロール可能にする */
+@media (max-width:1100px){
+  .topbar{overflow-x:auto;overflow-y:hidden;flex-wrap:nowrap}
+  .top-actions{flex:0 0 max-content}
+  .toolbar,.drawbar,.parambar{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch}
+  .workspace{grid-template-columns:200px minmax(0,1fr)}
+  .canvas-wrap{padding:28px}
+}
+
+/* スマートフォン: 横幅が狭くても操作対象を押しやすくし、
+   キャンバスにできるだけ広い領域を確保する */
+@media (max-width:700px){
+  html,body{min-width:0}
+  .topbar{
+    height:52px;
+    flex:0 0 52px;
+    padding:6px 8px;
+    gap:7px;
+    scrollbar-width:none;
+  }
+  .topbar::-webkit-scrollbar{display:none}
+  .logo{font-size:16px;flex:0 0 auto;margin-right:2px}
+  .top-actions{gap:6px}
+  .topbar button{min-height:38px;padding:7px 10px}
+  .zoom-box{min-height:38px;padding:5px 7px}
+  .zoom-box input{width:105px}
+  .zoom-box .small[title]{display:none}
+
+  .toolbar,
+  .drawbar{
+    flex:0 0 auto;
+    min-height:44px;
+    padding:5px 8px;
+    gap:6px;
+    scrollbar-width:none;
+  }
+  .toolbar::-webkit-scrollbar,
+  .drawbar::-webkit-scrollbar,
+  .parambar::-webkit-scrollbar{display:none}
+  .toolbar button,
+  .drawbar button{
+    min-height:34px;
+    padding:7px 10px;
+  }
+  .toolbar .group-label{display:none}
+  .drawbar .group-label{font-size:10px;margin-left:2px}
+
+  .parambar{
+    min-height:64px;
+    padding:7px 9px;
+    gap:10px;
+    align-items:center;
+  }
+  .param-title{font-size:12px}
+  .param-item{gap:6px}
+  .param-item label{font-size:11px}
+  .param-item input[type="range"]{width:105px}
+  .val{width:52px}
+  .color-input{width:34px;height:34px}
+  .hex-input{width:72px;min-height:34px}
+  .hsv{gap:6px}
+  #satVal{width:110px;height:64px}
+  #hue{width:110px}
+  .swatches{max-width:210px}
+
+  .effects-bar{padding:5px 8px}
+
+  .workspace{grid-template-columns:158px minmax(0,1fr)}
+  .sidebar-head{padding:8px;font-size:12px}
+  .sidebar>div[style]{padding:7px 7px 0 !important}
+  .sidebar button{min-height:36px}
+  .search-box input{min-height:34px;padding-top:7px;padding-bottom:7px}
+  .sort-row{margin-top:7px}
+  .sort-row select{min-height:34px}
+  .file-list{padding:7px}
+  .thumb{height:64px;margin-bottom:6px;padding:5px;gap:6px}
+  .thumb canvas{width:50px;height:50px;background-size:10px 10px}
+  .thumb-name{font-size:10px}
+  .thumb-badge{font-size:9px}
+  .folder-head{padding:7px 3px 6px;font-size:10px}
+  .drag-ghost{height:64px;padding:5px;gap:6px}
+  .drag-ghost canvas{width:50px;height:50px}
+
+  .canvas-wrap{
+    padding:12px;
+    -webkit-overflow-scrolling:touch;
+  }
+  #mainCanvas{box-shadow:0 6px 24px #0008}
+  .status{left:7px;top:7px;max-width:calc(100% - 14px);font-size:10px;padding:4px 6px}
+  .floatbar{
+    max-width:calc(100% - 12px);
+    flex-wrap:wrap;
+    padding:5px;
+  }
+  .floatbar button{min-height:34px;padding:6px 8px}
+  #opacityPanel{flex-wrap:wrap}
+  #opacityPanel input[type="range"]{width:115px}
+  .ui-dialog{width:min(440px,calc(100vw - 20px));max-height:calc(100vh - 20px);overflow:auto;padding:15px}
+  .ui-dialog .ui-actions{flex-wrap:wrap}
+  .ui-dialog .ui-actions button{min-height:38px}
+}
+
+/* 極端に狭いスマートフォンでもサイドバーを維持しつつ編集領域を残す */
+@media (max-width:420px){
+  .logo{font-size:15px}
+  .topbar{padding-left:6px;padding-right:6px}
+  .workspace{grid-template-columns:138px minmax(0,1fr)}
+  .thumb{height:60px}
+  .thumb canvas{width:46px;height:46px}
+  .parambar{min-height:60px;gap:8px}
+  .param-item input[type="range"]{width:90px}
+  #satVal{width:96px;height:58px}
+  #hue{width:96px}
+  .canvas-wrap{padding:8px}
+}
 </style>
 </head>
 <body tabindex="-1">
