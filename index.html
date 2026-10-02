@@ -57,7 +57,14 @@ input[type=file]{display:none}
 .resize-handle[data-dir="e"],.resize-handle[data-dir="w"]{cursor:ew-resize}
 .resize-handle[data-dir="ne"],.resize-handle[data-dir="sw"]{cursor:nesw-resize}
 .resize-handle[data-dir="nw"],.resize-handle[data-dir="se"]{cursor:nwse-resize}
-.resize-outline{position:absolute;left:0;top:0;border:1px dashed #4c8bf5;pointer-events:none;display:none;z-index:7}
+ .resize-outline{position:absolute;left:0;top:0;border:1px dashed #4c8bf5;pointer-events:none;display:none;z-index:7}
+.selection-resize-handles{position:absolute;left:0;top:0;pointer-events:none;display:none;z-index:12}
+.selection-resize-handle{position:absolute;width:9px;height:9px;background:#4c8bf5;border:1px solid #fff;border-radius:2px;pointer-events:auto;box-shadow:0 0 0 1px #1118}
+.selection-resize-handle[data-dir="n"],.selection-resize-handle[data-dir="s"]{cursor:ns-resize}
+.selection-resize-handle[data-dir="e"],.selection-resize-handle[data-dir="w"]{cursor:ew-resize}
+.selection-resize-handle[data-dir="ne"],.selection-resize-handle[data-dir="sw"]{cursor:nesw-resize}
+.selection-resize-handle[data-dir="nw"],.selection-resize-handle[data-dir="se"]{cursor:nwse-resize}
+.text-layer-hit{cursor:move}
 .file-list::-webkit-scrollbar{width:10px}
 .file-list::-webkit-scrollbar-track{background:#11141a}
 .file-list::-webkit-scrollbar-thumb{background:#2a3866;border-radius:6px;border:2px solid #11141a}
@@ -134,6 +141,8 @@ input[type=file]{display:none}
 .selection-box{position:absolute;border:1px dashed #fff;outline:1px dashed #111;pointer-events:none;display:none}
 .floatbar{position:absolute;z-index:5;display:none;gap:5px;background:#171a21ee;border:1px solid #454d5b;padding:6px;border-radius:8px;box-shadow:0 8px 25px #0009}
 .floatbar button{font-size:12px;padding:5px 8px}
+.floatbar .float-quality{display:none;align-items:center;gap:4px;font-size:12px;color:#aeb5c1;white-space:nowrap}
+.floatbar .float-quality select{font-size:12px;padding:4px 6px}
 #opacityPanel{align-items:center;gap:8px;padding:7px 10px}
 #opacityPanel label{font-size:12px;color:#aeb5c1;white-space:nowrap}
 #opacityPanel input[type=range]{width:160px}
@@ -147,6 +156,28 @@ input[type=file]{display:none}
 .check{display:flex;align-items:center;gap:5px;font-size:12px}
 .small{font-size:11px;color:var(--muted)}
 select{background:#242934;color:var(--text);border:1px solid var(--border);border-radius:6px;padding:6px}
+/* フォント設定をコンパクトに整理 */
+.font-panel{display:grid;grid-template-columns:minmax(260px,1.15fr) minmax(230px,1fr) minmax(210px,.9fr) minmax(230px,1fr);gap:7px;align-items:stretch;width:max-content;min-width:100%}
+.font-group{min-width:0;background:#20242d;border:1px solid #303642;border-radius:7px;padding:6px 8px;display:flex;flex-wrap:wrap;align-content:flex-start;align-items:center;gap:5px 8px}
+.font-group-title{flex:0 0 100%;font-size:11px;line-height:1.2;font-weight:700;color:#dbe0ea;padding-bottom:2px}
+.font-row{display:flex;align-items:center;gap:5px;min-width:0;white-space:nowrap}
+.font-row label,.font-group .check{font-size:11px;color:#aeb5c1;white-space:nowrap}
+.font-row select{height:29px;padding:4px 6px;font-size:11px;max-width:135px}
+.font-row input[type="range"]{width:78px}
+.font-row .val{width:44px;padding:3px 4px}
+.font-row .color-input{width:29px;height:28px}
+.font-panel .check{display:flex;align-items:center;gap:4px;white-space:nowrap}
+.font-panel .font-help{grid-column:1 / -1;display:flex;align-items:center;gap:8px;font-size:11px;color:#929aaa}
+.font-panel .font-help .primary{padding:5px 10px;font-size:12px}
+.font-panel .font-text-input{width:105px!important}
+.font-panel .param-item{gap:5px}.font-panel .param-item label{font-size:11px}
+.toolbar,.drawbar,.parambar,.effects-bar{scrollbar-color:#2a3866 #11141a;scrollbar-width:thin}
+.toolbar::-webkit-scrollbar,.drawbar::-webkit-scrollbar,.parambar::-webkit-scrollbar,.effects-bar::-webkit-scrollbar{height:8px}
+.toolbar::-webkit-scrollbar-track,.drawbar::-webkit-scrollbar-track,.parambar::-webkit-scrollbar-track,.effects-bar::-webkit-scrollbar-track{background:#11141a}
+.toolbar::-webkit-scrollbar-thumb,.drawbar::-webkit-scrollbar-thumb,.parambar::-webkit-scrollbar-thumb,.effects-bar::-webkit-scrollbar-thumb{background:#2a3866;border-radius:6px}
+.toolbar::-webkit-scrollbar-thumb:hover,.drawbar::-webkit-scrollbar-thumb:hover,.parambar::-webkit-scrollbar-thumb:hover,.effects-bar::-webkit-scrollbar-thumb:hover{background:#37478c}
+@media(max-width:1100px){.font-panel{grid-template-columns:repeat(2,minmax(270px,1fr));min-width:540px}}
+@media(max-width:700px){.font-panel{grid-template-columns:1fr;min-width:330px}}
 @media(max-width:900px){
  .topbar{overflow-x:auto}.logo{margin-right:0}.workspace{grid-template-columns:190px 1fr}
  .parambar{gap:8px}.sidebar{min-width:190px}
@@ -286,7 +317,6 @@ input[type="range"]{touch-action:manipulation}
       <button id="imageFilesBtn">画像ファイル選択(複数可)</button><input id="imageFiles" type="file" accept="image/png,image/jpeg,image/webp,image/gif" multiple style="display:none">
       <button id="folderFilesBtn">フォルダ/ZIP選択</button><input id="folderFiles" type="file" webkitdirectory directory multiple style="display:none">
       <input id="zipInput" type="file" accept=".zip" style="display:none">
-      <button id="newBtn">新規作成</button>
       <div class="zoom-box"><span class="small">ズーム</span><input id="zoom" type="range" min="25" max="2000" value="400"><span id="zoomLabel">400%</span><span class="small" title="キャンバス上でSpace+ドラッグ、または中クリックドラッグで移動できます。スクロールバーでも移動できます。">(Space+ドラッグ/中クリックで移動)</span></div>
       <button id="undoBtn" title="Ctrl+Z">↶ 元に戻す</button>
       <button id="redoBtn" title="Ctrl+Y / Ctrl+Shift+Z">↷ やり直す</button>
@@ -301,6 +331,7 @@ input[type="range"]{touch-action:manipulation}
     <button data-tool="gradient">グラデーション</button>
     <button data-tool="scale">拡大・縮小</button>
     <button data-tool="transform">反転・回転</button>
+    <button data-tool="font">フォント</button>
   </div>
 
   <div class="drawbar">
@@ -336,12 +367,24 @@ input[type="range"]{touch-action:manipulation}
           <div class="resize-handle" data-dir="sw"></div>
         </div>
         <div class="resize-outline" id="resizeOutline"></div>
+        <div class="selection-resize-handles" id="selectionResizeHandles">
+          <div class="selection-resize-handle" data-dir="n"></div>
+          <div class="selection-resize-handle" data-dir="s"></div>
+          <div class="selection-resize-handle" data-dir="e"></div>
+          <div class="selection-resize-handle" data-dir="w"></div>
+          <div class="selection-resize-handle" data-dir="ne"></div>
+          <div class="selection-resize-handle" data-dir="nw"></div>
+          <div class="selection-resize-handle" data-dir="se"></div>
+          <div class="selection-resize-handle" data-dir="sw"></div>
+        </div>
         <div class="floatbar" id="floatbar">
           <button id="confirmFloat" class="primary" style="display:none">確定</button>
           <button id="copySel">コピー</button>
           <button id="transparentSel">選択範囲を透過</button>
           <button id="outsideTransparent">選択範囲以外を透過</button>
           <button id="opacitySel">不透明度を調整</button>
+          <button id="scaleSelection">拡大・縮小</button>
+          <label class="float-quality" id="selScaleQualityWrap">画質<select id="selScaleQuality"><option value="smooth">なめらか</option><option value="pixel">ドット感を保つ</option></select></label>
           <button id="cancelSel">キャンセル</button>
         </div>
         <div class="floatbar" id="opacityPanel">
@@ -367,11 +410,13 @@ const canvas=$("mainCanvas"), ctx=canvas.getContext("2d",{willReadFrequently:tru
 const wrap=$("canvasWrap"), parambar=$("parambar"), fileList=$("fileList");
 let images=[], current=-1, tool="brush", zoom=400;
 let isDrawing=false, selecting=false, selection=null, selectionStart=null, clipboard=null, clipboardOrigin=null, lastCanvasPos=null;
+let selectedText=null, textDrag=null, selectionResize=null, fontResize=null;
+let fontClipboard=null, fontPropertySession=null;
 let preview=null, previewTimer=null;
 // 貼り付け直後の「まだ場所が確定していない浮いた状態」: {im,piece,x,y,w,h}
 let floating=null, floatDrag=null;
 // 選択範囲の不透明度調整パネルの状態: {im,selKey,reg,base,pushed,tick,last}
-let opacitySession=null, historyTick=0;
+let opacitySession=null, historyTick=0, selectionScaleMode=false, selectionScaleQuality="smooth";
 // 更新順の並び替え用(画像が編集された順番)/ 未保存の編集があるか / 画像一覧の並び方・折りたたみ状態 など
 let editSeq=0, dirty=false, sortMode="folder", eraseSizeUser=null, ctrlHeld=false;
 const collapsedFolders=new Set();
@@ -388,8 +433,8 @@ function recordGroup(imgs){
 }
 const palettes=["#ffffff","#000000","#ff4d4d","#ff9f43","#ffd93d","#6bcb77","#4d96ff","#9b5de5","#ff66c4","#00c2ff"];
 
-function makeState(c){
- return {w:c.width,h:c.height,data:ctxData(c)};
+function makeState(c,im){
+ return {w:c.width,h:c.height,data:ctxData(c),texts:im&&im.texts?JSON.parse(JSON.stringify(im.texts)):[]};
 }
 function ctxData(c){
  return new Uint8ClampedArray(c.getContext("2d").getImageData(0,0,c.width,c.height).data);
@@ -402,13 +447,14 @@ function pushHistory(im){
  historyTick++;
  im.mtime=++editSeq;dirty=true;
  const d=ctxData(im.canvas);
- im.history.push({w:im.canvas.width,h:im.canvas.height,data:d});
+ im.history.push({w:im.canvas.width,h:im.canvas.height,data:d,texts:im.texts?JSON.parse(JSON.stringify(im.texts)):[]});
  if(im.history.length>10) im.history.shift();
  im.redo=[];
 }
 function loadState(im,state){
  im.canvas.width=state.w; im.canvas.height=state.h;
  im.canvas.getContext("2d").putImageData(new ImageData(new Uint8ClampedArray(state.data),state.w,state.h),0,0);
+ im.texts=state.texts?JSON.parse(JSON.stringify(state.texts)):[];
  im.modified=true; im.mtime=++editSeq; dirty=true; preview=null; if(im===images[current]){selection=null;hideFloat()} render();
 }
 function commit(im){
@@ -429,6 +475,7 @@ function render(){
  ctx.clearRect(0,0,canvas.width,canvas.height);
  ctx.imageSmoothingEnabled=false;
  ctx.drawImage(src,0,0);
+ drawTextLayers(ctx,im);
  if(floating&&floating.im===im)ctx.drawImage(floating.piece,floating.x,floating.y);
  canvas.style.width=(canvas.width*zoom/100)+"px";
  canvas.style.height=(canvas.height*zoom/100)+"px";
@@ -455,6 +502,110 @@ function getRegion(src){
  if(x1<=x0||y1<=y0)return {x:0,y:0,w:0,h:0};
  return {x:x0,y:y0,w:x1-x0,h:y1-y0};
 }
+function fontGradient(ctx,t,w,h){
+ const g=t.gradientType==="horizontal"
+   ?ctx.createLinearGradient(0,0,w,0)
+   :t.gradientType==="radial"
+   ?ctx.createRadialGradient(w/2,h/2,0,w/2,h/2,Math.max(w,h)/2)
+   :ctx.createLinearGradient(0,0,0,h);
+ g.addColorStop(0,t.gradientStart||t.color||"#fff");
+ g.addColorStop(1,t.gradientEnd||t.color||"#fff");
+ return g;
+}
+function textMetrics(ctx,t){
+ ctx.save();
+ ctx.font=`${t.weight||"400"} ${t.size||24}px ${t.family||"sans-serif"}`;
+ const m=ctx.measureText(t.text||"");
+ const w=Math.max(1,Math.ceil(m.width+(t.strokeWidth||0)*2+10));
+ const h=Math.max(1,Math.ceil((t.size||24)*1.25+(t.strokeWidth||0)*2+10));
+ ctx.restore();
+ return {w,h};
+}
+function textDisplayMetrics(ctx,t){
+ const m=textMetrics(ctx,t);
+ return {w:Math.max(1,Math.round(m.w*(t.scaleX??1))),h:Math.max(1,Math.round(m.h*(t.scaleY??1)))};
+}
+function drawTextBody(c,t,m,baseAlpha){
+ c.font=`${t.weight||"400"} ${t.size||24}px ${t.family||"sans-serif"}`;
+ c.textBaseline="top";
+ const pad=(t.strokeWidth||0)+5, tw=Math.max(1,m.w), th=Math.max(1,m.h);
+ const clamp01=v=>Math.max(0,Math.min(1,v));
+ c.globalAlpha=baseAlpha;
+ if(t.backgroundEnabled){
+   c.fillStyle=t.backgroundGradient
+     ?fontGradient(c,{gradientType:t.backgroundGradientType,gradientStart:t.backgroundStart,gradientEnd:t.backgroundEnd,color:t.backgroundColor},tw,th)
+     :(t.backgroundColor||"#000");
+   c.globalAlpha=baseAlpha*clamp01((t.backgroundOpacity??100)/100);
+   c.fillRect(0,0,tw,th);
+   c.globalAlpha=baseAlpha;
+ }
+ const fill=t.gradientEnabled?fontGradient(c,{gradientType:t.gradientType,gradientStart:t.gradientStart,gradientEnd:t.gradientEnd,color:t.color},tw,th):(t.color||"#fff");
+ c.fillStyle=fill;
+ if(t.strokeEnabled&&t.strokeWidth>0){
+   c.save();
+   c.lineWidth=t.strokeWidth;
+   c.lineJoin="round";
+   c.strokeStyle=t.strokeGradient?fontGradient(c,{gradientType:t.strokeGradientType,gradientStart:t.strokeStart,gradientEnd:t.strokeEnd,color:t.strokeColor},tw,th):(t.strokeColor||"#000");
+   c.globalAlpha=baseAlpha*clamp01((t.strokeOpacity??100)/100);
+   if(t.strokeBlur){c.shadowBlur=t.strokeBlur;c.shadowColor=t.strokeColor||"#000"}
+   c.strokeText(t.text,pad,pad);
+   c.restore();
+ }
+ c.fillStyle=fill;
+ c.fillText(t.text,pad,pad);
+}
+// 文字の描画。scaleX/scaleY(選択枠のハンドルでの拡大縮小)を反映する。
+//  ・scaleQuality==="pixel": 等倍で描いた文字をニアレストネイバーで拡大縮小(ドット感を保つ)
+//  ・それ以外(smooth): ベクターのまま拡大縮小(なめらか)
+function drawTextObject(ctx,t,selected=false){
+ if(!t||!t.text)return;
+ const m=textMetrics(ctx,t);
+ const sx=t.scaleX??1, sy=t.scaleY??1, dw=m.w*sx, dh=m.h*sy;
+ const alpha=Math.max(0,Math.min(1,(t.opacity??100)/100));
+ ctx.save();
+ ctx.translate(t.x||0,t.y||0);
+ ctx.translate(dw/2,dh/2);
+ ctx.rotate((t.rotation||0)*Math.PI/180);
+ ctx.scale(t.flipH?-1:1,t.flipV?-1:1);
+ ctx.translate(-dw/2,-dh/2);
+ ctx.scale(sx,sy);
+ if(t.filter==="グレースケール")ctx.filter="grayscale(1)";
+ else if(t.filter==="セピア")ctx.filter="sepia(1)";
+ else if(t.filter==="反転")ctx.filter="invert(1)";
+ else if(t.filter==="明るく")ctx.filter=`brightness(${t.brightness||100}%)`;
+ if((sx!==1||sy!==1)&&t.scaleQuality==="pixel"){
+   const tc=document.createElement("canvas");tc.width=Math.max(1,m.w);tc.height=Math.max(1,m.h);
+   drawTextBody(tc.getContext("2d"),t,m,1);
+   ctx.globalAlpha=alpha;
+   ctx.imageSmoothingEnabled=false;
+   ctx.drawImage(tc,0,0);
+ }else{
+   drawTextBody(ctx,t,m,alpha);
+ }
+ ctx.restore();
+}
+function drawTextLayers(ctx,im){
+ (im.texts||[]).forEach(t=>drawTextObject(ctx,t,false));
+}
+function textAtPoint(im,p){
+ for(let i=(im.texts||[]).length-1;i>=0;i--){
+  const t=im.texts[i],m=textDisplayMetrics(ctx,t);
+  if(p.x>=t.x&&p.x<=t.x+m.w&&p.y>=t.y&&p.y<=t.y+m.h)return t;
+ }
+ return null;
+}
+function selectedTextBox(t){
+ if(!t)return null;
+ const m=textDisplayMetrics(ctx,t);
+ return {x:t.x,y:t.y,w:m.w,h:m.h};
+}
+function renderSelectedTextOutline(){
+ const t=selectedText;
+ if(!t)return;
+ const b=selectedTextBox(t);if(!b)return;
+ selection={x:Math.max(0,Math.round(b.x)),y:Math.max(0,Math.round(b.y)),w:b.w,h:b.h};
+ updateSelectionBox();
+}
 function updateThumb(im,srcOverride){
  if(!im.thumb)return;
  const c=im.thumb, x=c.getContext("2d");
@@ -463,6 +614,7 @@ function updateThumb(im,srcOverride){
  const r=Math.min(c.width/src.width,c.height/src.height);
  const w=src.width*r,h=src.height*r;
  x.drawImage(src,(c.width-w)/2,(c.height-h)/2,w,h);
+ if(!srcOverride&&im.texts?.length){x.save();x.translate((c.width-w)/2,(c.height-h)/2);x.scale(r,r);drawTextLayers(x,im);x.restore();}
 }
 let previewThumbTargets=[];
 function clearBulkPreviewThumbs(){
@@ -743,7 +895,7 @@ async function uiConfirm(message,okLabel,title){
 }
 function createBlankImage(w,h){
  const c=document.createElement("canvas");c.width=w;c.height=h;
- images.push({name:uniqueName("",`texture_${images.length+1}`,null),canvas:c,history:[],modified:false,folder:"",checked:false});
+ images.push({name:uniqueName("",`texture_${images.length+1}`,null),canvas:c,history:[],redo:[],modified:false,folder:"",checked:false,texts:[]});
  selectImage(images.length-1);
 }
 // 「新規作成」: ファイルから選ぶ / ●px×●pxの何も無い状態から作る、のどちらかを選ぶ
@@ -765,7 +917,6 @@ function openNewDialog(){
  card.querySelector("#newCreate").addEventListener("click",create);
  openDialog({title:"新規作成",content:wrapEl,actions:[{label:"キャンセル",value:null}],onEnter:()=>create(),onReady:c=>{closeFn=c}});
 }
-$("newBtn").onclick=openNewDialog;
 $("addImageBtn").onclick=openNewDialog;
 
 // --- 画像一覧: 画像を左クリック+ドラッグして、別のフォルダの見出し(または中の画像)の上で離すとそのフォルダへ移動 ---
@@ -950,12 +1101,13 @@ fileList.addEventListener("contextmenu",e=>{
  showCtxMenu(e.clientX,e.clientY,items);
 });
 function selectImage(i){
+ finalizeFontPropertyEdit();
  endLiveSession();
  commitFloating();
  if(preview){preview=null;if(ensureImage())updateThumb(images[current],null)}
  clearBulkPreviewThumbs();
  abortSelMove();
- current=i; selection=null;hideFloat();
+ current=i; selection=null;selectedText=null;textDrag=null;hideFloat();
  // ツール固有の一時状態(反転フラグや取得色など)は画像をまたいで持ち越さない
  flipH=false;flipV=false;colorPick=null;
  rebuildList(); setupTool(); render();
@@ -964,7 +1116,7 @@ async function fileToImage(file,folder=""){
  const bitmap=await createImageBitmap(file);
  const c=document.createElement("canvas");c.width=bitmap.width;c.height=bitmap.height;
  const x=c.getContext("2d");x.imageSmoothingEnabled=false;x.drawImage(bitmap,0,0);bitmap.close();
- return {name:file.name.replace(/\.[^.]+$/,"")+".png",canvas:c,history:[],modified:false,folder,checked:false};
+ return {name:file.name.replace(/\.[^.]+$/,"")+".png",canvas:c,history:[],redo:[],modified:false,folder,checked:false,texts:[]};
 }
 async function addFiles(files,folderOf){
  const all=[...files];
@@ -1238,6 +1390,37 @@ function setupHSV(){
   const [h,s2,v2]=rgbToHsv(...hexToRgb(brushColor));hue=h;sv=[s2,v2];$("hue").value=hue;drawSV();
  });
 }
+function beginFontPropertyEdit(){
+ if(!ensureImage()||!selectedText)return;
+ const im=images[current];
+ if(!fontPropertySession||fontPropertySession.im!==im||fontPropertySession.text!==selectedText){
+  fontPropertySession={im,text:selectedText,pushed:false};
+ }
+ if(!fontPropertySession.pushed){pushHistory(im);recordGroup([im]);fontPropertySession.pushed=true}
+}
+function finalizeFontPropertyEdit(){fontPropertySession=null}
+function copySelectedFont(){
+ if(!ensureImage()||!selectedText)return false;
+ fontClipboard=JSON.parse(JSON.stringify(selectedText));
+ if($("fontPaste"))$("fontPaste").disabled=false;
+ $("status").textContent="フォントをコピーしました。Ctrl+Vで貼り付けできます";
+ return true;
+}
+function pasteFontClipboard(){
+ if(!ensureImage()||!fontClipboard)return false;
+ finalizeFontPropertyEdit();endLiveSession();commitFloating();abortSelMove();
+ const im=images[current],t=JSON.parse(JSON.stringify(fontClipboard)),m=textDisplayMetrics(ctx,t);
+ const px=lastCanvasPos?Math.round(lastCanvasPos.x-m.w/2):Math.round(t.x||20);
+ const py=lastCanvasPos?Math.round(lastCanvasPos.y-m.h/2):Math.round(t.y||20);
+ t.x=Math.max(0,Math.min(Math.max(0,im.canvas.width-m.w),px));
+ t.y=Math.max(0,Math.min(Math.max(0,im.canvas.height-m.h),py));
+ im.texts=im.texts||[];pushHistory(im);recordGroup([im]);im.texts.push(t);
+ selectedText=t;selection=selectedTextBox(t);tool="font";
+ document.querySelectorAll("[data-tool]").forEach(b=>b.classList.toggle("active",b.dataset.tool==="font"));
+ setupTool();render();updateThumb(im);rebuildList();
+ $("status").textContent="フォントを貼り付けました。ドラッグで移動できます";
+ return true;
+}
 function setupTool(){
  if(tool==="brush"){
   parambar.innerHTML=`<span class="param-title">ブラシ</span>${slider("brushSize",1,64,4,"太さ","1")}${slider("brushOpacity",1,100,100,"不透明度","1")}${hsvUI()}`;
@@ -1290,8 +1473,70 @@ function setupTool(){
   ["flipH","flipV","rotL","rotR"].forEach(id=>$(id).onclick=()=>transformAction(id));
   $("angle").oninput=liveApply;$("angle").onchange=finalizeLiveEdit;
   bindToolParamSave("transform");
- }else if(tool==="select"){
-  parambar.innerHTML=`<span class="param-title">範囲選択</span><span class="small">キャンバスをドラッグして矩形選択してください。(どのツールでもCtrl+ドラッグで範囲選択できます)</span>`;
+ }else if(tool==="font"){
+  const t=selectedText;
+  const d=t||{text:"",size:32,family:"Arial",weight:"700",color:"#ffffff",gradientEnabled:false,gradientType:"vertical",gradientStart:"#ffffff",gradientEnd:"#ff3344",backgroundEnabled:false,backgroundColor:"#000000",backgroundOpacity:60,backgroundGradient:false,backgroundGradientType:"vertical",backgroundStart:"#000000",backgroundEnd:"#550000",strokeEnabled:true,strokeColor:"#000000",strokeOpacity:100,strokeWidth:2,strokeGradient:false,strokeGradientType:"vertical",strokeStart:"#000000",strokeEnd:"#000000",strokeBlur:0,opacity:100,scaleX:1,scaleY:1};
+  parambar.innerHTML=`<div class="font-panel">
+    <section class="font-group">
+      <div class="font-group-title">フォントの基本設定</div>
+      <div class="font-row"><label>文字</label><input id="fontText" class="hex-input font-text-input" value="${escapeHtml(d.text||"")}"></div>
+      <div class="font-row"><label>サイズ</label>${slider("fontSize",8,200,d.size||32,"","1")}</div>
+      <div class="font-row"><label>種類</label><select id="fontFamily"><option>Arial</option><option>Georgia</option><option>Times New Roman</option><option>Verdana</option><option>Trebuchet MS</option><option>Courier New</option><option>Impact</option><option>Yu Gothic</option><option>Meiryo</option><option>sans-serif</option><option>serif</option></select></div>
+      <div class="font-row"><label>太さ</label><select id="fontWeight"><option value="300">細字</option><option value="400">標準</option><option value="600">中太</option><option value="700">太字</option><option value="900">極太</option></select></div>
+      <div class="font-row">${colorField("fontColor","色",d.color||"#ffffff")}</div>
+      <div class="font-row">${slider("fontOpacity",0,100,d.opacity??100,"不透明度")}</div>
+    </section>
+    <section class="font-group">
+      <div class="font-group-title">文字のグラデーション</div>
+      <label class="check"><input id="fontGradientEnabled" type="checkbox">有効</label>
+      <div class="font-row"><label>色1</label>${colorField("fontGradientStart","",d.gradientStart||"#ffffff")}</div>
+      <div class="font-row"><label>色2</label>${colorField("fontGradientEnd","",d.gradientEnd||"#ff3344")}</div>
+      <div class="font-row"><label>方向</label><select id="fontGradientType"><option value="vertical">上→下</option><option value="horizontal">左→右</option><option value="radial">中央→外側</option></select></div>
+    </section>
+    <section class="font-group">
+      <div class="font-group-title">背景グラデ</div>
+      <label class="check"><input id="fontBgEnabled" type="checkbox">背景</label><label class="check"><input id="fontBgGradient" type="checkbox">グラデ</label>
+      <div class="font-row"><label>色1</label>${colorField("fontBgStart","",d.backgroundStart||"#000000")}</div>
+      <div class="font-row"><label>色2</label>${colorField("fontBgEnd","",d.backgroundEnd||"#550000")}</div>
+      <div class="font-row"><label>方向</label><select id="fontBgGradientType"><option value="vertical">上→下</option><option value="horizontal">左→右</option><option value="radial">中央→外側</option></select></div>
+      <div class="font-row"><label>単色</label>${colorField("fontBgColor","",d.backgroundColor||"#000000")}</div>
+      <div class="font-row">${slider("fontBgOpacity",0,100,d.backgroundOpacity??60,"不透明度")}</div>
+    </section>
+    <section class="font-group">
+      <div class="font-group-title">縁取り</div>
+      <label class="check"><input id="fontStrokeEnabled" type="checkbox">有効</label>
+      <div class="font-row"><label>色</label>${colorField("fontStrokeColor","",d.strokeColor||"#000000")}</div>
+      <div class="font-row">${slider("fontStrokeWidth",0,20,d.strokeWidth??2,"幅")}</div>
+      <div class="font-row">${slider("fontStrokeOpacity",0,100,d.strokeOpacity??100,"不透明度")}</div>
+      <div class="font-row">${slider("fontStrokeBlur",0,20,d.strokeBlur??0,"ぼかし")}</div>
+      <label class="check"><input id="fontStrokeGradient" type="checkbox">グラデ</label>
+      <div class="font-row"><label>色1</label>${colorField("fontStrokeStart","",d.strokeStart||"#000000")}</div>
+      <div class="font-row"><label>色2</label>${colorField("fontStrokeEnd","",d.strokeEnd||"#000000")}</div>
+      <div class="font-row"><label>方向</label><select id="fontStrokeGradientType"><option value="vertical">上→下</option><option value="horizontal">左→右</option><option value="radial">中央→外側</option></select></div>
+    </section>
+    <div class="font-help"><button class="primary" id="fontAdd">${t?"更新":"キャンバスに追加"}</button><button id="fontCopy" ${t?"":"disabled"}>コピー</button><button id="fontPaste" ${fontClipboard?"":"disabled"}>ペースト</button><span>${t?"選択中のフォントを編集中です。":"文字を入力して追加後、キャンバス上でドラッグして位置を調整できます。"}</span></div>
+  </div>`;
+  const map={fontText:"text",fontSize:"size",fontFamily:"family",fontWeight:"weight",fontColor:"color",fontGradientEnabled:"gradientEnabled",fontGradientType:"gradientType",fontGradientStart:"gradientStart",fontGradientEnd:"gradientEnd",fontBgEnabled:"backgroundEnabled",fontBgColor:"backgroundColor",fontBgOpacity:"backgroundOpacity",fontBgGradient:"backgroundGradient",fontBgGradientType:"backgroundGradientType",fontBgStart:"backgroundStart",fontBgEnd:"backgroundEnd",fontStrokeEnabled:"strokeEnabled",fontStrokeColor:"strokeColor",fontStrokeOpacity:"strokeOpacity",fontStrokeWidth:"strokeWidth",fontStrokeBlur:"strokeBlur",fontStrokeGradient:"strokeGradient",fontStrokeGradientType:"strokeGradientType",fontStrokeStart:"strokeStart",fontStrokeEnd:"strokeEnd",fontOpacity:"opacity"};
+  if(t)Object.entries(map).forEach(([id,k])=>{const el=$(id);if(!el)return;if(el.type==="checkbox")el.checked=!!t[k];else el.value=t[k]??el.value});
+  const fontInputs=Object.keys(map);
+  const syncFont=()=>{if(!selectedText)return;beginFontPropertyEdit();fontInputs.forEach(id=>{const el=$(id);if(el)selectedText[map[id]]=el.type==="checkbox"?el.checked:el.value});selectedText.size=+selectedText.size;selectedText.backgroundOpacity=+selectedText.backgroundOpacity;selectedText.strokeOpacity=+selectedText.strokeOpacity;selectedText.strokeWidth=+selectedText.strokeWidth;selectedText.strokeBlur=+selectedText.strokeBlur;selectedText.opacity=+selectedText.opacity;selection=selectedTextBox(selectedText);render()};
+  fontInputs.forEach(id=>{const el=$(id);if(el){el.addEventListener("input",syncFont);el.addEventListener("change",()=>{syncFont();finalizeFontPropertyEdit()})}});
+  ["fontColor","fontGradientStart","fontGradientEnd","fontBgColor","fontBgStart","fontBgEnd","fontStrokeColor","fontStrokeStart","fontStrokeEnd"].forEach(id=>bindColorHex(id,syncFont));
+  $("fontAdd").onclick=()=>{
+    const base={text:$("fontText").value||"テキスト",size:+$("fontSize").value,family:$("fontFamily").value,weight:$("fontWeight").value,color:$("fontColor").value,gradientEnabled:$("fontGradientEnabled").checked,gradientType:$("fontGradientType").value,gradientStart:$("fontGradientStart").value,gradientEnd:$("fontGradientEnd").value,backgroundEnabled:$("fontBgEnabled").checked,backgroundColor:$("fontBgColor").value,backgroundOpacity:+$("fontBgOpacity").value,backgroundGradient:$("fontBgGradient").checked,backgroundGradientType:$("fontBgGradientType").value,backgroundStart:$("fontBgStart").value,backgroundEnd:$("fontBgEnd").value,strokeEnabled:$("fontStrokeEnabled").checked,strokeColor:$("fontStrokeColor").value,strokeOpacity:+$("fontStrokeOpacity").value,strokeWidth:+$("fontStrokeWidth").value,strokeGradient:$("fontStrokeGradient").checked,strokeGradientType:$("fontStrokeGradientType").value,strokeStart:$("fontStrokeStart").value,strokeEnd:$("fontStrokeEnd").value,strokeBlur:+$("fontStrokeBlur").value,opacity:+$("fontOpacity").value,x:20,y:20,rotation:0,flipH:false,flipV:false,brightness:100,filter:"なし",scaleX:1,scaleY:1};
+    if(selectedText){const im=images[current];finalizeFontPropertyEdit();pushHistory(im);recordGroup([im]);const ox=selectedText.x,oy=selectedText.y;const keep={};["rotation","flipH","flipV","scaleX","scaleY","scaleQuality","brightness","filter"].forEach(k=>{if(selectedText[k]!==undefined)keep[k]=selectedText[k]});Object.assign(selectedText,base,keep,{x:ox,y:oy});selection=selectedTextBox(selectedText);render();updateThumb(im);rebuildList()}
+    else{const im=images[current];pushHistory(im);recordGroup([im]);base.x=Math.max(0,(im.canvas.width-textMetrics(ctx,base).w)/2);base.y=Math.max(0,(im.canvas.height-textMetrics(ctx,base).h)/2);im.texts=im.texts||[];im.texts.push(base);selectedText=base;selection=selectedTextBox(base);render();rebuildList();updateThumb(im)}
+  };
+  $("fontCopy").onclick=()=>copySelectedFont();
+  $("fontPaste").onclick=()=>pasteFontClipboard();
+}else if(tool==="select"){
+  if(selectionScaleMode&&hasRange()){
+   parambar.innerHTML=`<span class="param-title">拡大・縮小</span><div class="param-item"><label>画質</label><select id="selectionScaleQuality"><option value="smooth">なめらか</option><option value="pixel">ドット感を保つ</option></select></div><span class="small">選択範囲の■をドラッグして拡大・縮小。Shiftで1:1。</span>`;
+   $("selectionScaleQuality").value=selectionScaleQuality;
+   $("selectionScaleQuality").onchange=()=>setSelectionScaleQuality($("selectionScaleQuality").value);
+  }else{
+   parambar.innerHTML=`<span class="param-title">範囲選択</span><span class="small">キャンバスをドラッグして矩形選択してください。(どのツールでもCtrl+ドラッグで範囲選択できます)</span>`;
+  }
  }else{
   parambar.innerHTML=`<span class="param-title">${tool==="brush"?"":""}</span><span class="small">キャンバス上で操作してください。</span>`;
  }
@@ -1302,15 +1547,16 @@ function setupTool(){
   r.oninput=(e)=>{valInput.value=r.value;if(old)old(e)};
   valInput.value=r.value;
   valInput.addEventListener("input",()=>{
-   if(valInput.value==="")return;
-   let v=parseFloat(valInput.value);
-   if(isNaN(v))return;
+   if(valInput.value===""||valInput.value==="-"||valInput.value==="+")return;
+   const v=Number(valInput.value);if(!Number.isFinite(v))return;
    const min=parseFloat(r.min),max=parseFloat(r.max);
-   if(v<min)v=min;if(v>max)v=max;
-   r.value=v;
-   r.dispatchEvent(new Event("input",{bubbles:true}));
+   if(v>=min&&v<=max){r.value=v;r.dispatchEvent(new Event("input",{bubbles:true}))}
   });
-  valInput.addEventListener("change",()=>{valInput.value=r.value;r.dispatchEvent(new Event("change",{bubbles:true}))});
+  valInput.addEventListener("change",()=>{
+   let v=Number(valInput.value);if(!Number.isFinite(v))v=Number(r.value);
+   const min=parseFloat(r.min),max=parseFloat(r.max);v=Math.max(min,Math.min(max,v));
+   r.value=v;valInput.value=v;r.dispatchEvent(new Event("change",{bubbles:true}));
+  });
  });
  document.querySelectorAll('input[type="color"]').forEach(c=>{const h=$(c.id+"Hex");if(h)h.value=c.value});
  // 消しゴムの太さは初期値1。一度変更したら、その値を保持する
@@ -1319,10 +1565,11 @@ function setupTool(){
  updateBrushPreview();
 }
 document.querySelectorAll("[data-tool]").forEach(b=>b.onclick=()=>{
+ finalizeFontPropertyEdit();
  commitFloating();
  endLiveSession();
  abortSelMove();
- tool=b.dataset.tool;document.querySelectorAll("[data-tool]").forEach(x=>x.classList.toggle("active",x===b));
+ tool=b.dataset.tool;selectionScaleMode=false;document.querySelectorAll("[data-tool]").forEach(x=>x.classList.toggle("active",x===b));
  preview=null;clearBulkPreviewThumbs();setupTool();render();
 });
 function previewSource(){return preview||images[current]?.canvas}
@@ -1405,6 +1652,7 @@ let flipH=false,flipV=false;
 //     ・finalizeLiveEdit(): バーを離した時(change)などに、チェック済みの他画像へも適用し、
 //       履歴・バッジを確定する(バーは戻さない)
 let liveSession=null; // {tool, im, base, historyPushed}
+let fontLiveSession=null; // 選択中フォント専用のUndo単位
 function canvasSameAsKeep(im,k){
  const c=im.canvas;
  if(!k||k.w!==c.width||k.h!==c.height)return false;
@@ -1464,8 +1712,38 @@ function applyLiveCanvas(result){
  render();
  updateBulkPreviewThumbs();
 }
+function applySelectedTextTool(){
+ if(!ensureImage()||!selectedText)return false;
+ const im=images[current];
+ if(!fontLiveSession||fontLiveSession.im!==im||fontLiveSession.text!==selectedText||fontLiveSession.tool!==tool){
+  fontLiveSession={im,text:selectedText,tool,base:JSON.parse(JSON.stringify(selectedText)),pushed:false};
+ }
+ const t=selectedText,b=fontLiveSession.base;
+ if(!fontLiveSession.pushed){pushHistory(im);fontLiveSession.pushed=true}
+ if(tool==="adjust"){
+  t.brightness=Math.max(0,100+(+$("brightness").value||0));
+  t.filter=$("filter").value;
+  if(t.filter==="単色フィルター")t.color=$("filterColor").value;
+ }else if(tool==="gradient"){
+  t.gradientEnabled=true;t.gradientType=$("gradType").value;t.gradientStart=$("g1").value;t.gradientEnd=$("g2").value;t.opacity=+$("gradOpacity").value||100;
+  if(+$("gradOpacity").value===0)t.opacity=b.opacity??100;
+ }else if(tool==="scale"){
+  t.size=Math.max(1,Math.round((b.size||24)*(+$("scaleVal").value||100)/100));
+ }else if(tool==="transform"){
+  t.flipH=flipH;t.flipV=flipV;t.rotation=+$("angle").value||0;
+ }
+ selection=selectedTextBox(t);render();return true;
+}
+function finalizeSelectedTextTool(){
+ const s=fontLiveSession;if(!s||!s.pushed)return;
+ const desc=currentEffectDescription();
+ if(desc)logEffect(s.im,`フォント: ${desc}`,s.tool);
+ updateThumb(s.im);rebuildList();render();
+ s.pushed=false;
+}
 function liveApply(){
  if(!ensureImage())return;
+ if(selectedText&&(tool==="adjust"||tool==="gradient"||tool==="scale"||tool==="transform")){applySelectedTextTool();return}
  if((tool==="adjust"||tool==="gradient")&&!hasRange()){
   $("status").textContent="範囲が選択されていません。「範囲選択」で範囲を指定するか、Ctrl+Aで全体を選択してください";
   updateRangeHint();return;
@@ -1479,6 +1757,7 @@ function transformAction(id){
  if(id==="rotL"){$("angle").value=+$("angle").value-90;if(+$("angle").value<-180)$("angle").value=+$("angle").value+360}
  if(id==="rotR"){$("angle").value=+$("angle").value+90;if(+$("angle").value>180)$("angle").value=+$("angle").value-360}
  updateVal("angle");
+ if(selectedText){applySelectedTextTool();finalizeSelectedTextTool();return}
  liveApply();
  finalizeLiveEdit(); // ボタン操作は1クリック=1操作として、その場で確定する
 }
@@ -1514,6 +1793,7 @@ function currentEffectDescription(){
  return null;
 }
 function finalizeLiveEdit(){
+ if(selectedText&&(tool==="adjust"||tool==="gradient"||tool==="scale"||tool==="transform")){finalizeSelectedTextTool();return}
  const s=liveSession;if(!s||!s.historyPushed)return;
  const desc=currentEffectDescription();
  const others=targetImages().filter(im=>im!==s.im);
@@ -1564,6 +1844,8 @@ canvas.addEventListener("pointerdown",e=>{
  // Ctrl(Mac: Cmd)+左ドラッグ: どのツールを使用中でも範囲選択できる
  if(e.button===0&&(e.ctrlKey||e.metaKey)){
   e.preventDefault();
+   finalizeFontPropertyEdit();
+   selectedText=null;textDrag=null;
   if(floating&&floating.im===images[current])commitFloating();
   abortSelMove();
   const cp=clampPos(p);
@@ -1571,7 +1853,45 @@ canvas.addEventListener("pointerdown",e=>{
   try{canvas.setPointerCapture(e.pointerId)}catch(err){}
   updateSelectionBox();return;
  }
+ if((tool==="select"||tool==="font"||tool==="adjust"||tool==="gradient"||tool==="scale"||tool==="transform")&&!e.ctrlKey&&!e.metaKey){
+   const inActiveSelection=!!(selection&&selection.w>0&&selection.h>0&&p.x>=selection.x&&p.x<selection.x+selection.w&&p.y>=selection.y&&p.y<selection.y+selection.h);
+   const sb=selectedText?selectedTextBox(selectedText):null;
+   const hit=sb&&p.x>=sb.x&&p.x<sb.x+sb.w&&p.y>=sb.y&&p.y<sb.y+sb.h?selectedText:(inActiveSelection?null:textAtPoint(images[current],p));
+  if(hit){
+     finalizeFontPropertyEdit();
+    closeOpacityPanel();
+    hideFloat();
+    selectedText=hit;selection=selectedTextBox(hit);textDrag={start:p,ox:hit.x,oy:hit.y,moved:false};
+    if(tool==="font")setupTool();
+    render();return;
+  }
+  if(selectedText){
+    finalizeFontPropertyEdit();
+   // フォント選択中に空いている場所をクリックした場合は、
+   // そのクリックをブラシ等の操作には流さず「選択解除」だけ行う。
+   // これにより、非表示になった選択範囲用ボタンが誤って作用することもない。
+   selectedText=null;
+   selection=null;
+   textDrag=null;
+   closeOpacityPanel();
+   hideFloat();
+   setupTool();
+   render();
+   return;
+  }
+ }
+ if(!selectedText&&selection&&!selectionScaleMode&&p.x>=selection.x&&p.x<selection.x+selection.w&&p.y>=selection.y&&p.y<selection.y+selection.h){
+  selMove={started:false,dragStart:p,origX:selection.x,origY:selection.y,w:selection.w,h:selection.h,imIndex:current};
+  try{canvas.setPointerCapture(e.pointerId)}catch(err){}
+  return;
+ }
  if(tool==="select"){
+   const inActiveSelection=!!(selection&&selection.w>0&&selection.h>0&&p.x>=selection.x&&p.x<selection.x+selection.w&&p.y>=selection.y&&p.y<selection.y+selection.h);
+   const hit=inActiveSelection?null:textAtPoint(images[current],p);
+  if(hit){
+    selectedText=hit;selection=selectedTextBox(hit);textDrag={start:p,ox:hit.x,oy:hit.y,moved:false};setupTool();render();return;
+  }
+  selectedText=null;
   if(floating&&floating.im===images[current]){
    const f=floating;
    if(p.x>=f.x&&p.x<f.x+f.w&&p.y>=f.y&&p.y<f.y+f.h){
@@ -1580,10 +1900,6 @@ canvas.addEventListener("pointerdown",e=>{
     return;
    }
    commitFloating(); // 貼り付けた絵の外側をクリックしたら、その位置で確定
-  }
-  if(selection&&p.x>=selection.x&&p.x<selection.x+selection.w&&p.y>=selection.y&&p.y<selection.y+selection.h){
-   selMove={started:false,dragStart:p,origX:selection.x,origY:selection.y,w:selection.w,h:selection.h,imIndex:current};
-   return;
   }
   selectionStart=p;selection={x:p.x,y:p.y,w:0,h:0};selecting=true;
   try{canvas.setPointerCapture(e.pointerId)}catch(err){}
@@ -1608,7 +1924,16 @@ canvas.addEventListener("pointermove",e=>{
   render();
   return;
  }
- if(tool==="select"&&selMove){
+ if(textDrag&&selectedText){
+  const dx=p.x-textDrag.start.x,dy=p.y-textDrag.start.y;
+  if(Math.abs(dx)+Math.abs(dy)>0){
+    if(!textDrag.moved){pushHistory(images[current]);recordGroup([images[current]]);textDrag.moved=true}
+    selectedText.x=textDrag.ox+dx;
+    selectedText.y=textDrag.oy+dy;
+  }
+  selection=selectedTextBox(selectedText);render();return;
+ }
+ if(selMove&&!selectedText){
   const dx=p.x-selMove.dragStart.x, dy=p.y-selMove.dragStart.y;
   const im=images[selMove.imIndex];
   if(!im)return;
@@ -1620,9 +1945,7 @@ canvas.addEventListener("pointermove",e=>{
    im.canvas.getContext("2d").clearRect(selMove.origX,selMove.origY,selMove.w,selMove.h);
    selMove.piece=piece;selMove.started=true;
   }
-  let nx=selMove.origX+dx, ny=selMove.origY+dy;
-  nx=selMove.w>=im.canvas.width?0:Math.max(0,Math.min(im.canvas.width-selMove.w,Math.round(nx)));
-  ny=selMove.h>=im.canvas.height?0:Math.max(0,Math.min(im.canvas.height-selMove.h,Math.round(ny)));
+  let nx=Math.round(selMove.origX+dx), ny=Math.round(selMove.origY+dy);
   selMove.curX=nx;selMove.curY=ny;
   const comp=cloneCanvas(im.canvas);
   comp.getContext("2d").drawImage(selMove.piece,nx,ny);
@@ -1633,7 +1956,7 @@ canvas.addEventListener("pointermove",e=>{
   return;
  }
  if(selecting&&selectionStart){
-  const q=clampPos(p);
+  const q=p;
   selection={x:Math.min(selectionStart.x,q.x),y:Math.min(selectionStart.y,q.y),w:Math.abs(q.x-selectionStart.x)+1,h:Math.abs(q.y-selectionStart.y)+1};
   updateSelectionBox();updateRangeHint();
   return;
@@ -1651,7 +1974,10 @@ window.addEventListener("keyup",e=>{const c=e.ctrlKey||e.metaKey;if(c!==ctrlHeld
 window.addEventListener("blur",()=>{if(ctrlHeld){ctrlHeld=false;updateBrushPreview()}});
 window.addEventListener("pointerup",()=>{
  if(floatDrag){floatDrag=null;render();return}
- if(tool==="select"&&selMove){
+ if(textDrag&&selectedText){
+  textDrag=null;selection=selectedTextBox(selectedText);render();return;
+ }
+ if(selMove&&!selectedText){
   if(selMove.started){
    const im=images[selMove.imIndex];
    if(im){
@@ -1740,18 +2066,30 @@ let colorLastPoint=null;
 canvas.addEventListener("pointerdown",e=>{if(tool==="colorTransparent")colorLastPoint=[canvasPos(e).x,canvasPos(e).y]},{capture:true});
 
 function updateSelectionBox(){
- const box=$("selectionBox");if(!selection){box.style.display="none";closeOpacityPanel();return}
+ const box=$("selectionBox");
+ if(selectedText)selection=selectedTextBox(selectedText);
+ if(!selection){box.style.display="none";closeOpacityPanel();updateSelectionResizeHandles();return}
  const r=canvas.getBoundingClientRect(),wr=wrap.getBoundingClientRect();
  const sl=wrap.scrollLeft,st=wrap.scrollTop;
  box.style.display="block";box.style.left=(r.left-wr.left+sl+selection.x*r.width/canvas.width)+"px";box.style.top=(r.top-wr.top+st+selection.y*r.height/canvas.height)+"px";
  box.style.width=(selection.w*r.width/canvas.width)+"px";box.style.height=(selection.h*r.height/canvas.height)+"px";
+ // 文字(フォント)を選んだ時も、範囲選択と同じ枠・フロートバー・ハンドルを使う。
+ // 文字では「透過/以外を透過/不透明度/拡大縮小ボタン」は出さず、コピー・画質・キャンセルだけ表示する。
+ const isText=!!selectedText;
  $("floatbar").style.display="flex";
  const fl=!!floating;
- ["copySel","transparentSel","outsideTransparent","opacitySel"].forEach(id=>{$(id).style.display=fl?"none":""});
+ ["transparentSel","outsideTransparent","opacitySel","scaleSelection"].forEach(id=>{$(id).style.display=(fl||isText)?"none":""});
+ $("copySel").style.display=fl?"none":"";
  $("confirmFloat").style.display=fl?"":"none";
+ const qWrap=$("selScaleQualityWrap"),qSel=$("selScaleQuality");
+ if(qWrap){
+  qWrap.style.display=(!fl&&(isText||selectionScaleMode))?"flex":"none";
+  if(qSel)qSel.value=isText?(selectedText.scaleQuality||selectionScaleQuality):selectionScaleQuality;
+ }
  const fb=$("floatbar");
  fb.style.left=(sl+Math.min(wrap.clientWidth-fb.offsetWidth-5,Math.max(5,(r.left-wr.left+selection.x*r.width/canvas.width))))+"px";
  fb.style.top=(st+Math.max(5,(r.top-wr.top+selection.y*r.height/canvas.height-45)))+"px";
+ if(isText){closeOpacityPanel();updateSelectionResizeHandles();return}
  // 不透明度パネルは、選択範囲が変わった・貼り付け中・別画像になった場合は閉じる
  if(opacitySession&&(fl||!hasRange()||images[current]!==opacitySession.im||selKey()!==opacitySession.selKey))closeOpacityPanel();
  if(opacitySession){
@@ -1760,6 +2098,7 @@ function updateSelectionBox(){
   op.style.left=fb.style.left;
   op.style.top=(parseFloat(fb.style.top)+fb.offsetHeight+4)+"px";
  }
+ updateSelectionResizeHandles();
 }
 // ペン・ブラシ・消しゴムを使用中、キャンバスにカーソルを当てると、塗られる(消える)範囲を太さどおりにプレビュー表示する。
 //  ・実際に描いている間(ドラッグ中)は非表示。マウスを離すと再表示。
@@ -1795,6 +2134,94 @@ function updateBrushPreview(){
  el.style.background=color;
 }
 function hideFloat(){closeOpacityPanel();$("floatbar").style.display="none";$("selectionBox").style.display="none"}
+
+// --- 範囲選択の8ハンドル: 選択部分そのものを拡大・縮小する ---
+function updateSelectionResizeHandles(){
+ const box=$("selectionResizeHandles");if(!box)return;
+ const show=!!selection&&!selecting&&!canvasResize&&!floating&&(selectedText||selectionScaleMode);
+ if(!show){box.style.display="none";return}
+ const r=canvas.getBoundingClientRect(),wr=wrap.getBoundingClientRect(),ratio=r.width/canvas.width;
+ const left=r.left-wr.left+wrap.scrollLeft+selection.x*ratio;
+ const top=r.top-wr.top+wrap.scrollTop+selection.y*ratio;
+ const w=selection.w*ratio,h=selection.h*ratio;
+ box.style.display="block";
+ const ps={n:[left+w/2,top],s:[left+w/2,top+h],e:[left+w,top+h/2],w:[left,top+h/2],ne:[left+w,top],nw:[left,top],se:[left+w,top+h],sw:[left,top+h]};
+ box.querySelectorAll(".selection-resize-handle").forEach(el=>{
+  const p=ps[el.dataset.dir];el.style.left=(p[0]-4.5)+"px";el.style.top=(p[1]-4.5)+"px";
+ });
+}
+function startSelectionResize(e,dir){
+ if(!ensureImage()||!selection||(!selectedText&&!selectionScaleMode))return;
+ e.preventDefault();e.stopPropagation();endLiveSession();commitFloating();abortSelMove();
+ if(selectedText){
+  const t=selectedText,b=selectedTextBox(t),m=textMetrics(ctx,t);
+  fontResize={dir,startClientX:e.clientX,startClientY:e.clientY,origBox:{...b},origX:t.x,origY:t.y,
+    origScaleX:t.scaleX??1,origScaleY:t.scaleY??1,baseW:m.w,baseH:m.h,pushed:false};
+ }else{
+  const im=images[current],piece=document.createElement("canvas");piece.width=Math.max(1,selection.w);piece.height=Math.max(1,selection.h);
+  piece.getContext("2d").drawImage(im.canvas,selection.x,selection.y,selection.w,selection.h,0,0,selection.w,selection.h);
+  selectionResize={dir,startClientX:e.clientX,startClientY:e.clientY,orig:{...selection},piece};
+ }
+ try{$("selectionResizeHandles").setPointerCapture(e.pointerId)}catch(err){}
+ document.addEventListener("pointermove",onSelectionResizeMove);document.addEventListener("pointerup",onSelectionResizeUp);
+}
+function resizeBoxFromPointer(s,e){
+ const ratio=zoom/100,dx=(e.clientX-s.startClientX)/ratio,dy=(e.clientY-s.startClientY)/ratio;
+ let {x,y,w,h}=s.orig;const dir=s.dir;
+ let nx=x,ny=y,nw=w,nh=h;
+ if(dir.includes("e"))nw=Math.max(1,w+dx);
+ if(dir.includes("s"))nh=Math.max(1,h+dy);
+ if(dir.includes("w")){nw=Math.max(1,w-dx);nx=x+(w-nw)}
+ if(dir.includes("n")){nh=Math.max(1,h-dy);ny=y+(h-nh)}
+ if(e.shiftKey){
+  const ratio0=w/h;
+  if(dir.length===2){
+   const sc=Math.max(Math.abs(nw/w),Math.abs(nh/h));
+   nw=Math.max(1,w*sc);nh=Math.max(1,h*sc);
+   if(dir.includes("w"))nx=x+w-nw;if(dir.includes("n"))ny=y+h-nh;
+  }else if(dir==="e"||dir==="w"){
+   nh=Math.max(1,nw/ratio0);
+   if(dir==="w")ny=y+(h-nh)/2;
+  }else{
+   nw=Math.max(1,nh*ratio0);
+   if(dir==="n")nx=x+(w-nw)/2;
+  }
+ }
+ return {x:Math.round(nx),y:Math.round(ny),w:Math.max(1,Math.round(nw)),h:Math.max(1,Math.round(nh))};
+}
+function onSelectionResizeMove(e){
+ if(fontResize){
+  const s=fontResize,b=s.origBox;
+  const target=resizeBoxFromPointer({dir:s.dir,startClientX:s.startClientX,startClientY:s.startClientY,orig:b},e);
+  const t=selectedText,sx=Math.max(.05,target.w/b.w),sy=Math.max(.05,target.h/b.h);
+  if(!s.pushed){pushHistory(images[current]);recordGroup([images[current]]);s.pushed=true}
+  t.x=target.x;t.y=target.y;t.scaleX=s.origScaleX*sx;t.scaleY=s.origScaleY*sy;t.scaleQuality=($("selScaleQuality")&&$("selScaleQuality").value)||selectionScaleQuality;
+  selection=selectedTextBox(t);render();return;
+ }
+ const s=selectionResize;if(!s)return;
+ const target=resizeBoxFromPointer(s,e);
+ const comp=cloneCanvas(images[current].canvas),cx=comp.getContext("2d");
+ cx.clearRect(s.orig.x,s.orig.y,s.orig.w,s.orig.h);
+ cx.imageSmoothingEnabled=selectionScaleQuality==="smooth";if(cx.imageSmoothingEnabled)cx.imageSmoothingQuality="high";
+ cx.drawImage(s.piece,target.x,target.y,target.w,target.h);
+ s.preview=target;preview=comp;selection=target;render();
+}
+function onSelectionResizeUp(){
+ document.removeEventListener("pointermove",onSelectionResizeMove);document.removeEventListener("pointerup",onSelectionResizeUp);
+ if(fontResize){
+  const s=fontResize;fontResize=null;
+  if(s.pushed){const im=images[current];im.modified=true;updateThumb(im);rebuildList()}
+  render();return;
+ }
+ const s=selectionResize;selectionResize=null;if(!s||!s.preview){render();return}
+ const im=images[current],target=s.preview;
+ pushHistory(im);recordGroup([im]);
+ const c=im.canvas.getContext("2d");c.clearRect(s.orig.x,s.orig.y,s.orig.w,s.orig.h);
+ c.imageSmoothingEnabled=selectionScaleQuality==="smooth";if(c.imageSmoothingEnabled)c.imageSmoothingQuality="high";
+ c.drawImage(s.piece,target.x,target.y,target.w,target.h);
+ im.modified=true;preview=null;selection=target;updateThumb(im);rebuildList();render();
+}
+$("selectionResizeHandles").querySelectorAll(".selection-resize-handle").forEach(h=>h.addEventListener("pointerdown",e=>startSelectionResize(e,h.dataset.dir)));
 
 // --- プレビュー画面(キャンバスの描画できる範囲)自体の大きさを、
 //     絵柄(テクスチャの中身)を拡大縮小せずに変更するための8方向リサイズハンドル。
@@ -1866,7 +2293,7 @@ function onCanvasResizeUp(){
 function startCanvasResize(e,dir){
  if(!ensureImage())return;
  e.preventDefault();e.stopPropagation();
- endLiveSession();commitFloating();
+ finalizeFontPropertyEdit();endLiveSession();commitFloating();
  const im=images[current];
  canvasResize={dir,startClientX:e.clientX,startClientY:e.clientY,startW:im.canvas.width,startH:im.canvas.height,pxRatio:zoom/100,previewW:im.canvas.width,previewH:im.canvas.height,previewOffX:0,previewOffY:0};
  updateResizeHandles();
@@ -1876,9 +2303,28 @@ function startCanvasResize(e,dir){
 $("resizeHandles").querySelectorAll(".resize-handle").forEach(h=>{
  h.addEventListener("pointerdown",e=>startCanvasResize(e,h.dataset.dir));
 });
-$("cancelSel").onclick=()=>{if(floating){discardFloating();return}selection=null;hideFloat();render()};
+$("cancelSel").onclick=()=>{
+ if(floating){discardFloating();return}
+ if(selectedText){finalizeFontPropertyEdit();selectedText=null;textDrag=null}
+ selection=null;selectionScaleMode=false;hideFloat();setupTool();render()
+};
 $("confirmFloat").onclick=()=>commitFloating();
+// 範囲選択・文字の拡大縮小で共通の画質設定(なめらか / ドット感を保つ)
+function setSelectionScaleQuality(v){
+ if(v!=="pixel")v="smooth";
+ selectionScaleQuality=v;
+ const a=$("selScaleQuality"),b=$("selectionScaleQuality");
+ if(a)a.value=v;if(b)b.value=v;
+ const t=selectedText;
+ if(t&&ensureImage()){
+  if((t.scaleX??1)!==1||(t.scaleY??1)!==1){beginFontPropertyEdit();t.scaleQuality=v;finalizeFontPropertyEdit();updateThumb(images[current]);rebuildList()}
+  else t.scaleQuality=v;
+ }else if(hasRange())$("status").textContent=v==="pixel"?"画質: ドット感を保つ(次の拡大・縮小から適用)":"画質: なめらか(次の拡大・縮小から適用)";
+ render();
+}
+$("selScaleQuality").addEventListener("change",e=>{setSelectionScaleQuality(e.target.value);e.target.blur();document.body.focus()});
 $("copySel").onclick=()=>{
+ if(selectedText){copySelectedFont();return}
  if(!selection||!ensureImage())return;const im=images[current],n=document.createElement("canvas");n.width=selection.w;n.height=selection.h;n.getContext("2d").drawImage(im.canvas,selection.x,selection.y,selection.w,selection.h,0,0,selection.w,selection.h);clipboard=n;clipboardOrigin={x:selection.x,y:selection.y};$("status").textContent="コピーしました。Ctrl+Vで貼り付けできます";
 };
 $("transparentSel").onclick=()=>modifySelection(false);
@@ -1934,6 +2380,13 @@ function finishSelOpacity(){
 // という事態になり得るため、パネル内ボタンではフォーカス移動を起こさずにクリックだけ通す。
 ["selOpacityReset","selOpacityClose"].forEach(id=>$(id).addEventListener("mousedown",e=>e.preventDefault()));
 $("opacitySel").onclick=openOpacityPanel;
+$("scaleSelection").onclick=()=>{
+ if(!ensureImage()||!hasRange()||floating||selectedText)return;
+ selectionScaleMode=true;
+ closeOpacityPanel();
+ setupTool();
+ render();
+};
 $("selOpacityClose").onclick=()=>{finishSelOpacity();closeOpacityPanel()};
 $("selOpacityReset").onclick=()=>{$("selOpacity").value=100;$("selOpacityVal").value=100;applySelOpacity(100);finishSelOpacity()};
 $("selOpacity").oninput=e=>{$("selOpacityVal").value=e.target.value;applySelOpacity(e.target.value)};
@@ -2020,7 +2473,7 @@ function undoCore(){
   let did=false;
   group.forEach(im=>{
    if(!im||!im.history||!im.history.length)return;
-   im.redo=im.redo||[];im.redo.push({w:im.canvas.width,h:im.canvas.height,data:ctxData(im.canvas)});
+   im.redo=im.redo||[];im.redo.push({w:im.canvas.width,h:im.canvas.height,data:ctxData(im.canvas),texts:im.texts?JSON.parse(JSON.stringify(im.texts)):[]});
    const s=im.history.pop();loadState(im,s);updateThumb(im);did=true;
   });
   if(did)globalRedoStack.push(group);
@@ -2029,7 +2482,7 @@ function undoCore(){
  }
  // フォールバック: グループ記録が無い古い状態でも、現在の画像だけは元に戻せるようにする
  if(!ensureImage())return;const im=images[current];if(!im.history.length)return;
- im.redo=im.redo||[];im.redo.push({w:im.canvas.width,h:im.canvas.height,data:ctxData(im.canvas)});
+ im.redo=im.redo||[];im.redo.push({w:im.canvas.width,h:im.canvas.height,data:ctxData(im.canvas),texts:im.texts?JSON.parse(JSON.stringify(im.texts)):[]});
  const s=im.history.pop();loadState(im,s);updateThumb(im);
  rebuildList();
 }
@@ -2039,7 +2492,7 @@ function redoCore(){
   let did=false;
   group.forEach(im=>{
    if(!im||!im.redo||!im.redo.length)return;
-   im.history.push({w:im.canvas.width,h:im.canvas.height,data:ctxData(im.canvas)});
+   im.history.push({w:im.canvas.width,h:im.canvas.height,data:ctxData(im.canvas),texts:im.texts?JSON.parse(JSON.stringify(im.texts)):[]});
    const s=im.redo.pop();loadState(im,s);updateThumb(im);did=true;
   });
   if(did)globalUndoStack.push(group);
@@ -2047,12 +2500,12 @@ function redoCore(){
   return;
  }
  if(!ensureImage())return;const im=images[current];if(!im.redo||!im.redo.length)return;
- im.history.push({w:im.canvas.width,h:im.canvas.height,data:ctxData(im.canvas)});
+ im.history.push({w:im.canvas.width,h:im.canvas.height,data:ctxData(im.canvas),texts:im.texts?JSON.parse(JSON.stringify(im.texts)):[]});
  const s=im.redo.pop();loadState(im,s);updateThumb(im);
  rebuildList();
 }
-function undo(){if(floating){discardFloating();return}undoCore();syncLiveAfterHistory()}
-function redo(){if(floating)return;redoCore();syncLiveAfterHistory()}
+function undo(){if(floating){discardFloating();return}finalizeFontPropertyEdit();undoCore();syncLiveAfterHistory()}
+function redo(){if(floating)return;finalizeFontPropertyEdit();redoCore();syncLiveAfterHistory()}
 $("undoBtn").onclick=undo;
 $("redoBtn").onclick=redo;
 
@@ -2069,13 +2522,21 @@ function handleShortcut(e){
  if(tag==="input"||tag==="select"||tag==="textarea")return;
  if(meta&&e.key.toLowerCase()==="z"&&!e.shiftKey){e.preventDefault();undo();return}
  if(meta&&(e.key.toLowerCase()==="y"||(e.shiftKey&&e.key.toLowerCase()==="z"))){e.preventDefault();redo();return}
- if(meta&&e.key.toLowerCase()==="c"){if(selection){e.preventDefault();commitFloating();$("copySel").click()}return}
- if(meta&&e.key.toLowerCase()==="v"){if(clipboard){e.preventDefault();pasteClipboard()}return}
+  if(meta&&e.key.toLowerCase()==="c"){
+   if(selectedText){e.preventDefault();copySelectedFont();return}
+   if(selection){e.preventDefault();commitFloating();$("copySel").click();return}
+  }
+  if(meta&&e.key.toLowerCase()==="v"){
+   if(fontClipboard){e.preventDefault();pasteFontClipboard();return}
+   if(clipboard){e.preventDefault();pasteClipboard();return}
+  }
  if(meta&&e.key.toLowerCase()==="a"){
   if(ensureImage()){
    e.preventDefault();
+    finalizeFontPropertyEdit();
    commitFloating();
    abortSelMove();
+   selectedText=null;
    tool="select";document.querySelectorAll("[data-tool]").forEach(b=>b.classList.toggle("active",b.dataset.tool==="select"));setupTool();
    const im=images[current];
    selection={x:0,y:0,w:im.canvas.width,h:im.canvas.height};
@@ -2084,8 +2545,12 @@ function handleShortcut(e){
   return;
  }
  if(e.key==="Enter"&&floating){e.preventDefault();commitFloating();return}
- if(e.key==="Escape"){if(floating){discardFloating();return}abortSelMove();if(selection){selection=null;hideFloat();render()}return}
+ if(e.key==="Escape"){if(floating){discardFloating();return}abortSelMove();if(selectedText){finalizeFontPropertyEdit();selectedText=null;selection=null;tool="select";document.querySelectorAll("[data-tool]").forEach(b=>b.classList.toggle("active",b.dataset.tool==="select"));setupTool();render();return}if(selection){selection=null;hideFloat();render()}return}
  if((e.key==="Delete"||e.key==="Backspace")&&floating){e.preventDefault();discardFloating();return}
+ if((e.key==="Delete"||e.key==="Backspace")&&selectedText&&ensureImage()){
+   e.preventDefault();finalizeFontPropertyEdit();
+  const im=images[current],i=im.texts.indexOf(selectedText);if(i>=0){pushHistory(im);recordGroup([im]);im.texts.splice(i,1);selectedText=null;selection=null;render();updateThumb(im);rebuildList()}return;
+ }
  if((e.key==="Delete"||e.key==="Backspace")&&selection&&ensureImage()){e.preventDefault();modifySelection(false);return}
 }
 window.addEventListener("keydown",handleShortcut,true);
@@ -2097,10 +2562,12 @@ $("downloadZip").onclick=async()=>{
  if(!images.length){alert("画像がありません。");return}
  commitFloating();
  const z=new JSZip();
- await Promise.all(images.map(async im=>new Promise(resolve=>im.canvas.toBlob(b=>{
+ await Promise.all(images.map(async im=>new Promise(resolve=>{
+   const out=cloneCanvas(im.canvas),oc=out.getContext("2d");drawTextLayers(oc,im);
+   out.toBlob(b=>{
    const path=im.folder?`${im.folder}/${im.name}`:im.name;
    z.file(path,b);resolve()
- }, "image/png"))));
+ }, "image/png");})));
  const blob=await z.generateAsync({type:"blob",compression:"DEFLATE"});downloadBlob(blob,"texture-studio-export.zip");dirty=false;
 };
 
