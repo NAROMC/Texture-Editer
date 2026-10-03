@@ -201,31 +201,74 @@ input[type="range"]{touch-action:manipulation}
   .canvas-wrap{padding:28px}
 }
 
+/* タブレット: PC版の密度が高すぎないよう、操作部品を少し大きくする。
+   既存の横スクロール構造は維持し、機能やIDは変更しない。 */
+@media (min-width:701px) and (max-width:1100px){
+  .topbar{height:60px;flex-basis:60px;padding:8px 12px;gap:10px}
+  .logo{font-size:20px}
+  .top-actions{gap:8px}
+  .topbar button{min-height:42px;padding:8px 12px;font-size:14px}
+  .zoom-box{min-height:42px;padding:6px 9px;gap:7px}
+  .zoom-box input{width:130px}
+  .toolbar{flex-basis:50px;min-height:50px;padding:8px 12px;gap:8px}
+  .toolbar button{min-height:38px;padding:8px 12px;font-size:14px}
+  .drawbar{flex-basis:48px;min-height:48px;padding:8px 12px;gap:8px}
+  .drawbar button{min-height:38px;padding:8px 12px;font-size:14px}
+  .parambar{min-height:88px;padding:10px 14px;gap:16px}
+  .param-title{font-size:14px}
+  .param-item{gap:8px}
+  .param-item label{font-size:13px}
+  .param-item input[type=range]{width:155px}
+  .val{width:60px;font-size:13px;padding:5px 6px}
+  .color-input{width:38px;height:34px}
+  .hex-input{width:84px;min-height:34px;font-size:13px}
+  .sidebar-head{font-size:14px;padding:11px}
+  .thumb{height:78px;padding:7px;gap:9px}
+  .thumb canvas{width:62px;height:62px}
+  .thumb-name{font-size:12px}
+  .search-box input,.sort-row select{min-height:36px;font-size:13px}
+  .canvas-wrap{padding:30px}
+}
+
 /* スマートフォン: 横幅が狭くても操作対象を押しやすくし、
    キャンバスにできるだけ広い領域を確保する */
 @media (max-width:700px){
-  html,body{min-width:0}
+  html,body{min-width:0;overflow:hidden;overscroll-behavior:none}
+
+  /* スマホでは画像一覧を編集領域の横幅から切り離し、
+     必要なときだけ引き出せるドロワーにする。 */
+  .workspace{position:relative;display:block;min-width:0}
+  .editor{position:absolute;inset:0;min-width:0;width:100%}
+  .sidebar{position:absolute;z-index:40;left:0;top:0;bottom:0;width:min(280px,86vw);min-width:0;border-right:1px solid var(--border);
+    box-shadow:12px 0 35px #0009;transform:translateX(-105%);transition:transform .18s ease;
+    pointer-events:none}
+  .sidebar.mobile-open{transform:translateX(0);pointer-events:auto}
+  .mobile-sidebar-toggle{position:absolute;z-index:35;left:8px;top:8px;min-height:36px;padding:7px 10px;
+    background:#171a21ee;border:1px solid #454d5b;border-radius:7px;box-shadow:0 5px 18px #0008}
+  .mobile-sidebar-toggle{z-index:45}
+  .mobile-sidebar-toggle.is-open{left:min(280px,86vw);transform:none;border-radius:0 7px 7px 0}
+  .sidebar-head{cursor:pointer}
   .topbar{
-    height:52px;
-    flex:0 0 52px;
-    padding:6px 8px;
-    gap:7px;
+    height:46px;
+    flex:0 0 46px;
+    padding:5px 7px;
+    gap:6px;
     scrollbar-width:none;
   }
   .topbar::-webkit-scrollbar{display:none}
   .logo{font-size:16px;flex:0 0 auto;margin-right:2px}
   .top-actions{gap:6px}
-  .topbar button{min-height:38px;padding:7px 10px}
-  .zoom-box{min-height:38px;padding:5px 7px}
-  .zoom-box input{width:105px}
+  .topbar button{min-height:32px;padding:5px 8px;font-size:12px}
+  .zoom-box{min-height:32px;padding:4px 6px;gap:5px}
+  .zoom-box input{width:88px}
   .zoom-box .small[title]{display:none}
 
   .toolbar,
   .drawbar{
     flex:0 0 auto;
-    min-height:44px;
-    padding:5px 8px;
-    gap:6px;
+    min-height:38px;
+    padding:4px 7px;
+    gap:5px;
     scrollbar-width:none;
   }
   .toolbar::-webkit-scrollbar,
@@ -233,33 +276,34 @@ input[type="range"]{touch-action:manipulation}
   .parambar::-webkit-scrollbar{display:none}
   .toolbar button,
   .drawbar button{
-    min-height:34px;
-    padding:7px 10px;
+    min-height:30px;
+    padding:5px 8px;
+    font-size:12px;
   }
   .toolbar .group-label{display:none}
   .drawbar .group-label{font-size:10px;margin-left:2px}
 
   .parambar{
-    min-height:64px;
-    padding:7px 9px;
-    gap:10px;
+    min-height:54px;
+    padding:5px 8px;
+    gap:8px;
     align-items:center;
   }
-  .param-title{font-size:12px}
-  .param-item{gap:6px}
-  .param-item label{font-size:11px}
-  .param-item input[type="range"]{width:105px}
-  .val{width:52px}
-  .color-input{width:34px;height:34px}
-  .hex-input{width:72px;min-height:34px}
+  .param-title{font-size:11px}
+  .param-item{gap:5px}
+  .param-item label{font-size:10px}
+  .param-item input[type="range"]{width:90px}
+  .val{width:46px}
+  .color-input{width:30px;height:30px}
+  .hex-input{width:66px;min-height:30px;font-size:11px}
   .hsv{gap:6px}
   #satVal{width:110px;height:64px}
   #hue{width:110px}
   .swatches{max-width:210px}
 
-  .effects-bar{padding:5px 8px}
+  .effects-bar{padding:4px 7px}
 
-  .workspace{grid-template-columns:158px minmax(0,1fr)}
+  .workspace{grid-template-columns:1fr}
   .sidebar-head{padding:8px;font-size:12px}
   .sidebar>div[style]{padding:7px 7px 0 !important}
   .sidebar button{min-height:36px}
@@ -298,14 +342,806 @@ input[type="range"]{touch-action:manipulation}
 @media (max-width:420px){
   .logo{font-size:15px}
   .topbar{padding-left:6px;padding-right:6px}
-  .workspace{grid-template-columns:138px minmax(0,1fr)}
+  .sidebar{width:min(290px,88vw)}
+  .mobile-sidebar-toggle.is-open{left:min(290px,88vw)}
   .thumb{height:60px}
   .thumb canvas{width:46px;height:46px}
-  .parambar{min-height:60px;gap:8px}
-  .param-item input[type="range"]{width:90px}
-  #satVal{width:96px;height:58px}
-  #hue{width:96px}
+  .parambar{min-height:50px;gap:6px}
+  .param-item input[type="range"]{width:82px}
   .canvas-wrap{padding:8px}
+}
+
+/* タッチ端末での重なり・はみ出しを防ぐ追加の安全策 */
+@media (max-width:700px){
+  .toolbar,.drawbar,.parambar,.effects-bar,.topbar{
+    max-width:100%;min-width:0;
+  }
+  .top-actions{min-width:max-content}
+  .toolbar button,.drawbar button,.topbar button{flex:0 0 auto}
+  .parambar{justify-content:flex-start}
+  .floatbar{left:max(6px, min(6px, calc(100% - 20px)));right:auto;max-width:calc(100% - 12px);overflow:auto;max-height:38vh}
+  .floatbar button,.floatbar label{flex:0 0 auto}
+  .selection-resize-handle,.resize-handle{touch-action:none}
+  #mainCanvas{touch-action:none}
+  .canvas-wrap{overscroll-behavior:contain}
+}
+@media (max-width:380px){
+  .topbar{gap:5px}
+  .topbar button{padding-left:8px;padding-right:8px}
+  .zoom-box input{width:88px}
+  .toolbar,.drawbar{padding-left:6px;padding-right:6px}
+  .parambar{padding-left:7px;padding-right:7px}
+  .floatbar{max-width:calc(100% - 8px)}
+}
+
+/* =========================================================
+   Mobile / Tablet usability refinements
+   ・フォント/各種効果バーは縦積みせず横スクロール
+   ・カラーコード左の色プレビューを確保
+   ・選択範囲フロートGUIを小型化
+   ・モバイル/タブレット専用ペーストボタン
+   ========================================================= */
+@media (min-width:701px) and (max-width:1100px){
+  .parambar{overflow-x:auto;overflow-y:hidden;white-space:nowrap}
+  .font-panel{
+    display:flex;
+    flex-wrap:nowrap;
+    width:max-content;
+    min-width:max-content;
+    gap:7px;
+  }
+  .font-group{
+    flex:0 0 270px;
+    width:270px;
+  }
+  .font-panel .font-help{
+    flex:0 0 auto;
+    width:max-content;
+    min-width:max-content;
+    grid-column:auto;
+  }
+  .font-panel .font-help span{white-space:nowrap}
+  .color-input{
+    flex:0 0 auto;
+    width:40px;
+    min-width:40px;
+    height:36px;
+  }
+  .hex-input{flex:0 0 auto}
+  .floatbar{
+    flex-wrap:nowrap;
+    width:max-content;
+    max-width:calc(100% - 16px);
+    overflow-x:auto;
+    overflow-y:hidden;
+    padding:4px;
+    gap:4px;
+  }
+  .floatbar button{min-height:32px;padding:5px 7px;font-size:11px}
+  #opacityPanel{flex-wrap:nowrap}
+}
+
+@media (max-width:700px){
+  /* フォント設定は画面を覆う縦長パネルにせず、横長の操作列にする */
+  .parambar:has(.font-panel){
+    overflow-x:auto;
+    overflow-y:hidden;
+    align-items:flex-start;
+    min-height:58px;
+    padding:5px 7px;
+  }
+  .font-panel{
+    display:flex;
+    flex-wrap:nowrap;
+    width:max-content;
+    min-width:max-content;
+    gap:6px;
+    align-items:stretch;
+  }
+  .font-group{
+    flex:0 0 245px;
+    width:245px;
+    padding:5px 7px;
+    gap:4px 6px;
+  }
+  .font-row select{max-width:120px}
+  .font-panel .font-help{
+    flex:0 0 auto;
+    width:max-content;
+    min-width:max-content;
+  }
+  .font-panel .font-help span{white-space:nowrap}
+
+  /* 色コード左の色プレビューを細くしない */
+  .color-input{
+    flex:0 0 auto;
+    width:38px !important;
+    min-width:38px !important;
+    height:34px !important;
+  }
+  .hex-input{flex:0 0 auto}
+  .parambar .param-item{flex:0 0 auto}
+
+  /* 範囲選択フロートGUIは小さく、1列横スクロール */
+  .floatbar{
+    flex-wrap:nowrap;
+    width:max-content;
+    max-width:calc(100% - 12px);
+    overflow-x:auto;
+    overflow-y:hidden;
+    padding:3px;
+    gap:3px;
+    max-height:none;
+  }
+  .floatbar button{
+    min-height:28px;
+    height:28px;
+    padding:3px 6px;
+    font-size:10px;
+  }
+  .floatbar .float-quality,
+  .floatbar .float-quality select{font-size:10px}
+  .floatbar .float-quality select{padding:3px 4px}
+
+  /* 画像プレビュー右下のモバイル/タブレット専用ペースト */
+  .mobile-paste-button{
+    position:absolute;
+    z-index:20;
+    right:10px;
+    bottom:10px;
+    min-height:34px;
+    padding:6px 10px;
+    font-size:11px;
+    background:#5363e8ee;
+    border-color:#7784ff;
+    box-shadow:0 5px 18px #0009;
+  }
+  .mobile-paste-button:disabled{opacity:.48;cursor:not-allowed}
+}
+
+@media (max-width:420px){
+  .font-group{flex-basis:225px;width:225px}
+  .mobile-paste-button{right:8px;bottom:8px;min-height:32px;padding:5px 8px}
+}
+
+\n/* =========================================================\n   Mobile / Tablet: parameter bars must stay horizontal\n   ・フォント内部も縦積みさせず、長くても横スクロール\n   ・明るさ/フィルター/グラデーション/色透過も縦文字化させない\n   ========================================================= */\n@media (max-width:1100px){\n  .parambar{flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;white-space:nowrap}\n  .parambar > *{flex:0 0 auto;min-width:max-content}\n  .parambar .small,.parambar #rangeHint{white-space:nowrap;writing-mode:horizontal-tb;word-break:keep-all;overflow-wrap:normal;flex:0 0 auto}\n  .parambar:has(.font-panel){min-height:58px;align-items:center}\n  .parambar:has(.font-panel) .font-panel{display:flex;flex-wrap:nowrap;align-items:center;width:max-content;min-width:max-content;height:46px}\n  .parambar:has(.font-panel) .font-group{flex:0 0 auto;width:max-content;min-width:max-content;height:40px;flex-wrap:nowrap;align-content:center;white-space:nowrap}\n  .parambar:has(.font-panel) .font-group-title{flex:0 0 auto;white-space:nowrap}\n  .parambar:has(.font-panel) .font-help{flex:0 0 auto;width:max-content;min-width:max-content;white-space:nowrap}\n  .parambar:has(#filter),.parambar:has(#gradType),.parambar:has(#applyColorTrans){align-items:center;flex-wrap:nowrap}\n  .parambar:has(#filter) > *,.parambar:has(#gradType) > *,.parambar:has(#applyColorTrans) > *,.parambar:has(#filterColorWrap) > *{flex:0 0 auto}\n  .parambar:has(#filter) .param-item,.parambar:has(#gradType) .param-item{flex:0 0 auto;white-space:nowrap}\n  .mobile-action-buttons{position:absolute;z-index:20;right:10px;bottom:10px;display:flex;flex-direction:row;align-items:center;gap:6px}\n  .mobile-action-buttons button{min-height:34px;padding:6px 10px;font-size:11px;box-shadow:0 5px 18px #0009}\n  .mobile-action-buttons .mobile-paste-button{position:static}\n  .mobile-delete-button{background:#6f2938ee;border-color:#a94a5d}\n  .mobile-delete-button:disabled,.mobile-paste-button:disabled{opacity:.48;cursor:not-allowed}\n}\n@media (max-width:420px){\n  .mobile-action-buttons{right:8px;bottom:8px;gap:5px}\n  .mobile-action-buttons button{min-height:32px;padding:5px 8px}\n}\n
+
+/* =========================================================
+   Final mobile refinement
+   ・削除/貼り付けは必要な時だけ表示する小型ボタン
+   ・フォント設定は「薄い2段構成」の横長カードとして横スクロール
+   ・色透過/明るさ・フィルター/グラデーションの文字を常に横書き
+   ========================================================= */
+@media (max-width:700px){
+  /* パラメータバー全体を横一列に固定 */
+  .parambar{
+    flex-direction:row !important;
+    flex-wrap:nowrap !important;
+    align-items:center !important;
+    overflow-x:auto !important;
+    overflow-y:hidden !important;
+    white-space:nowrap !important;
+  }
+
+  /* 色透過・明るさ/フィルター・グラデーション */
+  .parambar:has(#applyColorTrans),
+  .parambar:has(#filter),
+  .parambar:has(#gradType){
+    min-height:58px !important;
+    height:58px !important;
+    padding:5px 7px !important;
+    flex-direction:row !important;
+    flex-wrap:nowrap !important;
+    align-items:center !important;
+  }
+
+  .parambar:has(#applyColorTrans) *,
+  .parambar:has(#filter) *,
+  .parambar:has(#gradType) *{
+    writing-mode:horizontal-tb !important;
+    text-orientation:mixed !important;
+    white-space:nowrap !important;
+    word-break:normal !important;
+    overflow-wrap:normal !important;
+    flex:0 0 auto !important;
+  }
+
+  .parambar:has(#applyColorTrans) .param-title,
+  .parambar:has(#filter) .param-title,
+  .parambar:has(#gradType) .param-title{
+    display:inline-flex !important;
+    width:max-content !important;
+    min-width:max-content !important;
+    height:auto !important;
+    line-height:1.2 !important;
+  }
+
+  .parambar:has(#applyColorTrans) .param-item,
+  .parambar:has(#filter) .param-item,
+  .parambar:has(#gradType) .param-item,
+  .parambar:has(#filterColorWrap) .param-item{
+    display:flex !important;
+    flex-direction:row !important;
+    align-items:center !important;
+    width:max-content !important;
+    min-width:max-content !important;
+  }
+
+  .parambar:has(#filter) #filterColorWrap,
+  .parambar:has(#filter) #filterColorAlphaWrap{
+    width:max-content !important;
+    min-width:max-content !important;
+    flex-direction:row !important;
+  }
+
+  .parambar:has(#applyColorTrans) .small,
+  .parambar:has(#filter) .small,
+  .parambar:has(#gradType) .small,
+  .parambar:has(#filter) #rangeHint,
+  .parambar:has(#gradType) #rangeHint{
+    display:inline-block !important;
+    width:max-content !important;
+    min-width:max-content !important;
+    writing-mode:horizontal-tb !important;
+    white-space:nowrap !important;
+  }
+
+  /* フォント: 各カテゴリを横長カード化し、カード内だけ2段程度に折り返す */
+  .parambar:has(.font-panel){
+    min-height:96px !important;
+    height:96px !important;
+    padding:5px 7px !important;
+    align-items:stretch !important;
+  }
+
+  .parambar:has(.font-panel) .font-panel{
+    display:flex !important;
+    flex-direction:row !important;
+    flex-wrap:nowrap !important;
+    align-items:stretch !important;
+    gap:8px !important;
+    width:max-content !important;
+    min-width:max-content !important;
+    height:84px !important;
+  }
+
+  .parambar:has(.font-panel) .font-group{
+    flex:0 0 330px !important;
+    width:330px !important;
+    min-width:330px !important;
+    height:84px !important;
+    min-height:84px !important;
+    padding:5px 7px !important;
+    display:flex !important;
+    flex-direction:row !important;
+    flex-wrap:wrap !important;
+    align-content:center !important;
+    align-items:center !important;
+    gap:3px 7px !important;
+    overflow:hidden !important;
+    white-space:nowrap !important;
+  }
+
+  .parambar:has(.font-panel) .font-group-title{
+    flex:0 0 100% !important;
+    width:100% !important;
+    min-width:100% !important;
+    height:16px !important;
+    padding:0 !important;
+    line-height:16px !important;
+    writing-mode:horizontal-tb !important;
+    white-space:nowrap !important;
+  }
+
+  .parambar:has(.font-panel) .font-row,
+  .parambar:has(.font-panel) .check{
+    flex:0 0 auto !important;
+    width:max-content !important;
+    min-width:max-content !important;
+    height:28px !important;
+    display:flex !important;
+    flex-direction:row !important;
+    align-items:center !important;
+    writing-mode:horizontal-tb !important;
+    white-space:nowrap !important;
+  }
+
+  .parambar:has(.font-panel) .font-row label,
+  .parambar:has(.font-panel) .font-group .check,
+  .parambar:has(.font-panel) .font-row input,
+  .parambar:has(.font-panel) .font-row select{
+    writing-mode:horizontal-tb !important;
+    text-orientation:mixed !important;
+    white-space:nowrap !important;
+  }
+
+  .parambar:has(.font-panel) .font-help{
+    flex:0 0 330px !important;
+    width:330px !important;
+    min-width:330px !important;
+    height:84px !important;
+    display:flex !important;
+    flex-direction:row !important;
+    flex-wrap:wrap !important;
+    align-content:center !important;
+    align-items:center !important;
+    gap:5px !important;
+    white-space:nowrap !important;
+    overflow:hidden !important;
+  }
+
+  .parambar:has(.font-panel) .font-help span{
+    width:100% !important;
+    white-space:nowrap !important;
+    writing-mode:horizontal-tb !important;
+  }
+
+  .parambar:has(.font-panel) .font-text-input{
+    width:105px !important;
+  }
+
+  /* モバイルの削除/貼り付け: 「本当にボタン」くらいまで小型化 */
+  .mobile-action-buttons{
+    right:8px !important;
+    bottom:8px !important;
+    gap:4px !important;
+    align-items:center !important;
+  }
+
+  .mobile-action-buttons button{
+    min-width:0 !important;
+    width:auto !important;
+    min-height:28px !important;
+    height:28px !important;
+    padding:3px 7px !important;
+    border-radius:6px !important;
+    font-size:10px !important;
+    line-height:20px !important;
+    box-shadow:0 3px 10px #0008 !important;
+  }
+}
+
+@media (max-width:420px){
+  .parambar:has(.font-panel){
+    min-height:92px !important;
+    height:92px !important;
+  }
+  .parambar:has(.font-panel) .font-panel{
+    height:80px !important;
+  }
+  .parambar:has(.font-panel) .font-group,
+  .parambar:has(.font-panel) .font-help{
+    height:80px !important;
+    min-height:80px !important;
+  }
+  .mobile-action-buttons{
+    right:7px !important;
+    bottom:7px !important;
+    gap:3px !important;
+  }
+  .mobile-action-buttons button{
+    min-height:26px !important;
+    height:26px !important;
+    padding:2px 6px !important;
+    font-size:10px !important;
+  }
+}
+
+
+/* =========================================================
+   FINAL MOBILE FIX v2
+   ・フォント設定は「各設定ブロックを横一列」にして横スクロール
+   ・スマホの設定項目は親子すべてを横書きに固定
+   ・削除/貼り付けは必要な時だけ、右下にコンパクト表示
+   ========================================================= */
+@media (max-width:700px){
+  /* ===== 共通: 設定バーを横書き・横スクロールに固定 ===== */
+  .parambar{
+    display:flex !important;
+    flex-direction:row !important;
+    flex-wrap:nowrap !important;
+    align-items:center !important;
+    justify-content:flex-start !important;
+    overflow-x:auto !important;
+    overflow-y:hidden !important;
+    white-space:nowrap !important;
+    writing-mode:horizontal-tb !important;
+    direction:ltr !important;
+    unicode-bidi:normal !important;
+  }
+
+  /* 色を選んで透過 / 明るさ・フィルター / グラデーション
+     ※「*」まで指定して、縦書き・縦積みの継承を完全に切る */
+  .parambar:has(#applyColorTrans),
+  .parambar:has(#filter),
+  .parambar:has(#gradType){
+    height:60px !important;
+    min-height:60px !important;
+    max-height:60px !important;
+    padding:5px 8px !important;
+    display:flex !important;
+    flex-direction:row !important;
+    flex-wrap:nowrap !important;
+    align-items:center !important;
+    overflow-x:auto !important;
+    overflow-y:hidden !important;
+    writing-mode:horizontal-tb !important;
+    direction:ltr !important;
+  }
+
+  .parambar:has(#applyColorTrans),
+  .parambar:has(#applyColorTrans) *,
+  .parambar:has(#filter),
+  .parambar:has(#filter) *,
+  .parambar:has(#gradType),
+  .parambar:has(#gradType) *{
+    writing-mode:horizontal-tb !important;
+    text-orientation:mixed !important;
+    white-space:nowrap !important;
+    word-break:normal !important;
+    overflow-wrap:normal !important;
+    direction:ltr !important;
+    unicode-bidi:normal !important;
+  }
+
+  .parambar:has(#applyColorTrans) > *,
+  .parambar:has(#filter) > *,
+  .parambar:has(#gradType) > *,
+  .parambar:has(#filterColorWrap) > *{
+    flex:0 0 auto !important;
+    min-width:max-content !important;
+    width:max-content !important;
+  }
+
+  .parambar:has(#applyColorTrans) .param-title,
+  .parambar:has(#filter) .param-title,
+  .parambar:has(#gradType) .param-title,
+  .parambar:has(#applyColorTrans) .small,
+  .parambar:has(#filter) .small,
+  .parambar:has(#gradType) .small,
+  .parambar:has(#filter) #rangeHint,
+  .parambar:has(#gradType) #rangeHint{
+    display:block !important;
+    flex:0 0 auto !important;
+    width:max-content !important;
+    min-width:max-content !important;
+    max-width:none !important;
+    height:auto !important;
+    line-height:1.2 !important;
+  }
+
+  .parambar:has(#applyColorTrans) .param-item,
+  .parambar:has(#filter) .param-item,
+  .parambar:has(#gradType) .param-item,
+  .parambar:has(#filterColorWrap) .param-item,
+  .parambar:has(#filterColorAlphaWrap) .param-item{
+    display:flex !important;
+    flex:0 0 auto !important;
+    flex-direction:row !important;
+    align-items:center !important;
+    width:max-content !important;
+    min-width:max-content !important;
+    max-width:none !important;
+  }
+
+  .parambar:has(#filter) #filterColorWrap,
+  .parambar:has(#filter) #filterColorAlphaWrap{
+    display:flex;
+    flex-direction:row !important;
+    align-items:center !important;
+    width:max-content !important;
+    min-width:max-content !important;
+  }
+
+  /* ===== フォント: 4ブロックを「縦2段」ではなく「横1列」にする ===== */
+  .parambar:has(.font-panel){
+    height:112px !important;
+    min-height:112px !important;
+    max-height:112px !important;
+    padding:5px 7px !important;
+    display:flex !important;
+    flex-direction:row !important;
+    flex-wrap:nowrap !important;
+    align-items:stretch !important;
+    overflow-x:auto !important;
+    overflow-y:hidden !important;
+    writing-mode:horizontal-tb !important;
+  }
+
+  .parambar:has(.font-panel) .font-panel{
+    display:flex !important;
+    flex-direction:row !important;
+    flex-wrap:nowrap !important;
+    align-items:stretch !important;
+    gap:7px !important;
+    width:max-content !important;
+    min-width:max-content !important;
+    height:100px !important;
+    writing-mode:horizontal-tb !important;
+  }
+
+  /* 各カテゴリは横長カード。4カードすべて同じ横一列に並ぶ */
+  .parambar:has(.font-panel) .font-group{
+    flex:0 0 330px !important;
+    width:330px !important;
+    min-width:330px !important;
+    height:100px !important;
+    min-height:100px !important;
+    max-height:100px !important;
+    padding:5px 7px !important;
+    display:grid !important;
+    grid-template-columns:1fr 1fr !important;
+    grid-auto-rows:minmax(0,1fr) !important;
+    align-content:stretch !important;
+    align-items:center !important;
+    gap:2px 7px !important;
+    overflow:hidden !important;
+    white-space:nowrap !important;
+    writing-mode:horizontal-tb !important;
+  }
+
+  .parambar:has(.font-panel) .font-group-title{
+    grid-column:1 / -1 !important;
+    width:auto !important;
+    min-width:0 !important;
+    height:auto !important;
+    min-height:0 !important;
+    padding:0 !important;
+    line-height:14px !important;
+    display:block !important;
+    white-space:nowrap !important;
+    writing-mode:horizontal-tb !important;
+  }
+
+  .parambar:has(.font-panel) .font-row,
+  .parambar:has(.font-panel) .font-group > .check{
+    display:flex !important;
+    flex-direction:row !important;
+    align-items:center !important;
+    justify-content:flex-start !important;
+    flex:0 0 auto !important;
+    width:max-content !important;
+    max-width:100% !important;
+    min-width:0 !important;
+    height:25px !important;
+    white-space:nowrap !important;
+    writing-mode:horizontal-tb !important;
+  }
+
+  .parambar:has(.font-panel) .font-row label,
+  .parambar:has(.font-panel) .font-group .check,
+  .parambar:has(.font-panel) .font-row input,
+  .parambar:has(.font-panel) .font-row select{
+    writing-mode:horizontal-tb !important;
+    text-orientation:mixed !important;
+    white-space:nowrap !important;
+    word-break:normal !important;
+    overflow-wrap:normal !important;
+  }
+
+  .parambar:has(.font-panel) .font-row select{
+    max-width:120px !important;
+  }
+
+  .parambar:has(.font-panel) .font-row input[type="range"]{
+    width:62px !important;
+    max-width:62px !important;
+  }
+
+  .parambar:has(.font-panel) .font-text-input{
+    width:105px !important;
+    max-width:105px !important;
+  }
+
+  /* ヘルプ/操作ボタンも5個目のカードとして横に続ける */
+  .parambar:has(.font-panel) .font-help{
+    flex:0 0 330px !important;
+    width:330px !important;
+    min-width:330px !important;
+    height:100px !important;
+    min-height:100px !important;
+    display:flex !important;
+    flex-direction:row !important;
+    flex-wrap:wrap !important;
+    align-content:center !important;
+    align-items:center !important;
+    gap:5px !important;
+    white-space:nowrap !important;
+    overflow:hidden !important;
+    writing-mode:horizontal-tb !important;
+  }
+
+  .parambar:has(.font-panel) .font-help span{
+    display:block !important;
+    width:100% !important;
+    white-space:nowrap !important;
+    writing-mode:horizontal-tb !important;
+  }
+
+  /* ===== 右下アクション ===== */
+  .mobile-action-buttons{
+    right:7px !important;
+    bottom:7px !important;
+    gap:4px !important;
+    display:flex !important;
+    flex-direction:row !important;
+    align-items:center !important;
+  }
+
+  .mobile-action-buttons button{
+    width:auto !important;
+    min-width:0 !important;
+    height:27px !important;
+    min-height:27px !important;
+    padding:2px 7px !important;
+    margin:0 !important;
+    border-radius:5px !important;
+    font-size:10px !important;
+    line-height:20px !important;
+    box-shadow:0 2px 8px #0008 !important;
+  }
+}
+
+@media (max-width:420px){
+  .parambar:has(.font-panel){
+    height:108px !important;
+    min-height:108px !important;
+    max-height:108px !important;
+  }
+  .parambar:has(.font-panel) .font-panel{
+    height:96px !important;
+  }
+  .parambar:has(.font-panel) .font-group,
+  .parambar:has(.font-panel) .font-help{
+    height:96px !important;
+    min-height:96px !important;
+    max-height:96px !important;
+  }
+  .parambar:has(.font-panel) .font-row,
+  .parambar:has(.font-panel) .font-group > .check{
+    height:23px !important;
+  }
+  .mobile-action-buttons{
+    right:6px !important;
+    bottom:6px !important;
+    gap:3px !important;
+  }
+  .mobile-action-buttons button{
+    height:26px !important;
+    min-height:26px !important;
+    padding:2px 6px !important;
+    font-size:10px !important;
+  }
+}
+
+
+/* 削除ボタン: 貼り付けボタンの左に赤色で表示(貼り付けボタンの位置は右下のまま) */
+.mobile-action-buttons{flex-direction:row !important;justify-content:flex-end !important}
+.mobile-action-buttons .mobile-delete-button{order:1 !important;background:#e53935 !important;border-color:#ff6f6b !important;color:#fff !important}
+.mobile-action-buttons .mobile-paste-button{order:2 !important}
+
+/* 右下の「削除 貼り付け」: 画面右下に固定(貼り付けの左に赤い削除) */
+.mobile-action-buttons{position:absolute !important;right:8px !important;bottom:8px !important;left:auto !important;top:auto !important;z-index:30;width:auto !important;height:auto !important;flex:0 0 auto !important;flex-direction:row !important;align-items:center !important;gap:6px !important;margin:0 !important}
+.mobile-action-buttons button{position:static !important;margin:0 !important}
+/* 範囲選択ハンドル: タッチで掴みやすい大きさ */
+@media (max-width:1100px){.selection-resize-handle{width:16px;height:16px;border-radius:3px}}
+
+/* タブレット: フォント設定もスマホと同じ横一列(横スクロール)にして画面を覆わない */
+@media (min-width:701px) and (max-width:1100px){
+/* ===== フォント: 4ブロックを「縦2段」ではなく「横1列」にする ===== */
+  .parambar:has(.font-panel){
+    height:112px !important;
+    min-height:112px !important;
+    max-height:112px !important;
+    padding:5px 7px !important;
+    display:flex !important;
+    flex-direction:row !important;
+    flex-wrap:nowrap !important;
+    align-items:stretch !important;
+    overflow-x:auto !important;
+    overflow-y:hidden !important;
+    writing-mode:horizontal-tb !important;
+  }
+.parambar:has(.font-panel) .font-panel{
+    display:flex !important;
+    flex-direction:row !important;
+    flex-wrap:nowrap !important;
+    align-items:stretch !important;
+    gap:7px !important;
+    width:max-content !important;
+    min-width:max-content !important;
+    height:100px !important;
+    writing-mode:horizontal-tb !important;
+  }
+/* 各カテゴリは横長カード。4カードすべて同じ横一列に並ぶ */
+  .parambar:has(.font-panel) .font-group{
+    flex:0 0 330px !important;
+    width:330px !important;
+    min-width:330px !important;
+    height:100px !important;
+    min-height:100px !important;
+    max-height:100px !important;
+    padding:5px 7px !important;
+    display:grid !important;
+    grid-template-columns:1fr 1fr !important;
+    grid-auto-rows:minmax(0,1fr) !important;
+    align-content:stretch !important;
+    align-items:center !important;
+    gap:2px 7px !important;
+    overflow:hidden !important;
+    white-space:nowrap !important;
+    writing-mode:horizontal-tb !important;
+  }
+.parambar:has(.font-panel) .font-group-title{
+    grid-column:1 / -1 !important;
+    width:auto !important;
+    min-width:0 !important;
+    height:auto !important;
+    min-height:0 !important;
+    padding:0 !important;
+    line-height:14px !important;
+    display:block !important;
+    white-space:nowrap !important;
+    writing-mode:horizontal-tb !important;
+  }
+.parambar:has(.font-panel) .font-row,
+  .parambar:has(.font-panel) .font-group > .check{
+    display:flex !important;
+    flex-direction:row !important;
+    align-items:center !important;
+    justify-content:flex-start !important;
+    flex:0 0 auto !important;
+    width:max-content !important;
+    max-width:100% !important;
+    min-width:0 !important;
+    height:25px !important;
+    white-space:nowrap !important;
+    writing-mode:horizontal-tb !important;
+  }
+.parambar:has(.font-panel) .font-row label,
+  .parambar:has(.font-panel) .font-group .check,
+  .parambar:has(.font-panel) .font-row input,
+  .parambar:has(.font-panel) .font-row select{
+    writing-mode:horizontal-tb !important;
+    text-orientation:mixed !important;
+    white-space:nowrap !important;
+    word-break:normal !important;
+    overflow-wrap:normal !important;
+  }
+.parambar:has(.font-panel) .font-row select{
+    max-width:120px !important;
+  }
+.parambar:has(.font-panel) .font-row input[type="range"]{
+    width:62px !important;
+    max-width:62px !important;
+  }
+.parambar:has(.font-panel) .font-text-input{
+    width:105px !important;
+    max-width:105px !important;
+  }
+/* ヘルプ/操作ボタンも5個目のカードとして横に続ける */
+  .parambar:has(.font-panel) .font-help{
+    flex:0 0 330px !important;
+    width:330px !important;
+    min-width:330px !important;
+    height:100px !important;
+    min-height:100px !important;
+    display:flex !important;
+    flex-direction:row !important;
+    flex-wrap:wrap !important;
+    align-content:center !important;
+    align-items:center !important;
+    gap:5px !important;
+    white-space:nowrap !important;
+    overflow:hidden !important;
+    writing-mode:horizontal-tb !important;
+  }
+.parambar:has(.font-panel) .font-help span{
+    display:block !important;
+    width:100% !important;
+    white-space:nowrap !important;
+    writing-mode:horizontal-tb !important;
+  }
 }
 </style>
 </head>
@@ -391,8 +1227,6 @@ input[type="range"]{touch-action:manipulation}
           <label for="selOpacity">不透明度</label>
           <input id="selOpacity" type="range" min="0" max="100" step="1" value="100">
           <input class="val" id="selOpacityVal" type="number" min="0" max="100" step="1" value="100"><span class="unit">%</span>
-          <button id="selOpacityReset">100%に戻す</button>
-          <button id="selOpacityClose">閉じる</button>
         </div>
         <div class="status" id="status">画像を読み込んでください</div>
       </div>
@@ -409,8 +1243,10 @@ const $=id=>document.getElementById(id);
 const canvas=$("mainCanvas"), ctx=canvas.getContext("2d",{willReadFrequently:true});
 const wrap=$("canvasWrap"), parambar=$("parambar"), fileList=$("fileList");
 let images=[], current=-1, tool="brush", zoom=400;
-let isDrawing=false, selecting=false, selection=null, selectionStart=null, clipboard=null, clipboardOrigin=null, lastCanvasPos=null;
+let isDrawing=false, selecting=false, selection=null, selectionStart=null, clipboard=null, clipboardSnapshot=null, clipboardSnapshotData=null, clipboardOrigin=null, lastCanvasPos=null;
 let selectedText=null, textDrag=null, selectionResize=null, fontResize=null;
+// 画像コピーは現在のキャンバスとは独立したスナップショットを保持する。
+// 貼り付け後に元画像が変化しても、再度「貼り付け」した内容が変わらないようにする。
 let fontClipboard=null, fontPropertySession=null;
 let preview=null, previewTimer=null;
 // 貼り付け直後の「まだ場所が確定していない浮いた状態」: {im,piece,x,y,w,h}
@@ -467,6 +1303,9 @@ function ensureImage(){
  return true;
 }
 function render(){
+ try{return __renderBody()}finally{if(window.__syncMobileSelectionButtons)window.__syncMobileSelectionButtons()}
+}
+function __renderBody(){
  if(!ensureImage()){
    canvas.width=1;canvas.height=1;ctx.clearRect(0,0,1,1);$("status").textContent="画像を読み込んでください";renderEffectsBar();updateResizeHandles();return;
  }
@@ -1246,6 +2085,22 @@ function bindColorHex(colorId,onFinalize){
  hexEl.addEventListener("blur",()=>{hexEl.value=colorEl.value;if(onFinalize)onFinalize()});
  hexEl.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();hexEl.blur()}});
 }
+function bindBrushColor(){
+ const colorEl=$("brushColor"),hexEl=$("brushColorHex");
+ if(!colorEl||!hexEl)return;
+ const sync=()=>{brushColor=colorEl.value.toLowerCase();hexEl.value=brushColor};
+ colorEl.addEventListener("input",sync);
+ hexEl.addEventListener("input",()=>{
+  let v=hexEl.value.trim();
+  if(v&&v[0]!=="#")v="#"+v;
+  if(/^#[0-9a-fA-F]{6}$/.test(v)){
+   colorEl.value=v.toLowerCase();
+   brushColor=colorEl.value;
+  }
+ });
+ hexEl.addEventListener("blur",()=>{hexEl.value=colorEl.value;brushColor=colorEl.value.toLowerCase()});
+ hexEl.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();hexEl.blur()}});
+}
 // --- 画像ごとにツールの設定(パラメーター)を記憶する ---
 const TOOL_PARAM_IDS={
  adjust:["brightness","filter","filterColor","filterColorAlpha"],
@@ -1402,7 +2257,9 @@ function finalizeFontPropertyEdit(){fontPropertySession=null}
 function copySelectedFont(){
  if(!ensureImage()||!selectedText)return false;
  fontClipboard=JSON.parse(JSON.stringify(selectedText));
+ window.__mobileLastCopyType="font";
  if($("fontPaste"))$("fontPaste").disabled=false;
+ if(window.__syncMobilePasteButton)window.__syncMobilePasteButton();
  $("status").textContent="フォントをコピーしました。Ctrl+Vで貼り付けできます";
  return true;
 }
@@ -1423,16 +2280,18 @@ function pasteFontClipboard(){
 }
 function setupTool(){
  if(tool==="brush"){
-  parambar.innerHTML=`<span class="param-title">ブラシ</span>${slider("brushSize",1,64,4,"太さ","1")}${slider("brushOpacity",1,100,100,"不透明度","1")}${hsvUI()}`;
-  setupHSV();
+  parambar.innerHTML=`<span class="param-title">ブラシ</span>${slider("brushSize",1,64,4,"太さ","1")}${slider("brushOpacity",1,100,100,"不透明度","1")}<input id="brushColor" class="color-input" type="color" value="${brushColor}" title="色を指定"><input id="brushColorHex" class="hex-input" type="text" maxlength="7" value="${brushColor}" spellcheck="false" autocomplete="off" title="カラーコード">`;
+  bindBrushColor();
  }else if(tool==="pen"){
-  parambar.innerHTML=`<span class="param-title">ペン</span>${slider("penSize",1,32,1,"太さ(px)","1")}${slider("penOpacity",1,100,100,"不透明度","1")}${hsvUI()}`;
-  setupHSV();
+  // ペンは色入力を開けばOS標準のカラーピッカーを使えるため、
+  // ペン設定内の常設HSVパレット・色相バーは表示しない。
+  parambar.innerHTML=`<span class="param-title">ペン</span>${slider("penSize",1,32,1,"太さ(px)","1")}${slider("penOpacity",1,100,100,"不透明度","1")}<input id="brushColor" class="color-input" type="color" value="${brushColor}" title="色を指定"><input id="brushColorHex" class="hex-input" type="text" maxlength="7" value="${brushColor}" spellcheck="false" autocomplete="off" title="カラーコード">`;
+  bindBrushColor();
  }else if(tool==="eraser"){
   parambar.innerHTML=`<span class="param-title">消しゴム</span>${slider("eraseSize",1,64,eraseSizeUser??1,"太さ")}${slider("eraseOpacity",1,100,100,"不透明度")}`;
  }else if(tool==="fill"){
-  parambar.innerHTML=`<span class="param-title">塗りつぶし</span>${slider("fillTol",0,100,10,"許容度")}${slider("fillOpacity",1,100,100,"不透明度")}${hsvUI()}`;
-  setupHSV();
+  parambar.innerHTML=`<span class="param-title">塗りつぶし</span>${slider("fillTol",0,100,10,"許容度")}${slider("fillOpacity",1,100,100,"不透明度")}<input id="brushColor" class="color-input" type="color" value="${brushColor}" title="色を指定"><input id="brushColorHex" class="hex-input" type="text" maxlength="7" value="${brushColor}" spellcheck="false" autocomplete="off" title="カラーコード">`;
+  bindBrushColor();
  }else if(tool==="colorTransparent"){
   parambar.innerHTML=`<span class="param-title">色を選んで透過</span>${slider("colorTol",0,100,0,"許容度") }<label class="check"><input id="allSame" type="checkbox">つながっていない同色も透過</label><span class="small">キャンバスをクリックして色を取得 → 適用</span><button class="primary" id="applyColorTrans">適用</button>`;
   loadToolParams("colorTransparent");
@@ -1530,11 +2389,7 @@ function setupTool(){
   $("fontCopy").onclick=()=>copySelectedFont();
   $("fontPaste").onclick=()=>pasteFontClipboard();
 }else if(tool==="select"){
-  if(selectionScaleMode&&hasRange()){
-   parambar.innerHTML=`<span class="param-title">拡大・縮小</span><div class="param-item"><label>画質</label><select id="selectionScaleQuality"><option value="smooth">なめらか</option><option value="pixel">ドット感を保つ</option></select></div><span class="small">選択範囲の■をドラッグして拡大・縮小。Shiftで1:1。</span>`;
-   $("selectionScaleQuality").value=selectionScaleQuality;
-   $("selectionScaleQuality").onchange=()=>setSelectionScaleQuality($("selectionScaleQuality").value);
-  }else{
+ {
    parambar.innerHTML=`<span class="param-title">範囲選択</span><span class="small">キャンバスをドラッグして矩形選択してください。(どのツールでもCtrl+ドラッグで範囲選択できます)</span>`;
   }
  }else{
@@ -1880,7 +2735,7 @@ canvas.addEventListener("pointerdown",e=>{
    return;
   }
  }
- if(!selectedText&&selection&&!selectionScaleMode&&p.x>=selection.x&&p.x<selection.x+selection.w&&p.y>=selection.y&&p.y<selection.y+selection.h){
+ if(!selectedText&&!floating&&selection&&!selectionScaleMode&&p.x>=selection.x&&p.x<selection.x+selection.w&&p.y>=selection.y&&p.y<selection.y+selection.h){
   selMove={started:false,dragStart:p,origX:selection.x,origY:selection.y,w:selection.w,h:selection.h,imIndex:current};
   try{canvas.setPointerCapture(e.pointerId)}catch(err){}
   return;
@@ -2066,6 +2921,10 @@ let colorLastPoint=null;
 canvas.addEventListener("pointerdown",e=>{if(tool==="colorTransparent")colorLastPoint=[canvasPos(e).x,canvasPos(e).y]},{capture:true});
 
 function updateSelectionBox(){
+ if(window.__syncMobileSelectionButtons)window.__syncMobileSelectionButtons();
+ return __updateSelectionBoxBody();
+}
+function __updateSelectionBoxBody(){
  const box=$("selectionBox");
  if(selectedText)selection=selectedTextBox(selectedText);
  if(!selection){box.style.display="none";closeOpacityPanel();updateSelectionResizeHandles();return}
@@ -2087,8 +2946,11 @@ function updateSelectionBox(){
   if(qSel)qSel.value=isText?(selectedText.scaleQuality||selectionScaleQuality):selectionScaleQuality;
  }
  const fb=$("floatbar");
- fb.style.left=(sl+Math.min(wrap.clientWidth-fb.offsetWidth-5,Math.max(5,(r.left-wr.left+selection.x*r.width/canvas.width))))+"px";
- fb.style.top=(st+Math.max(5,(r.top-wr.top+selection.y*r.height/canvas.height-45)))+"px";
+ const desiredLeft=r.left-wr.left+selection.x*r.width/canvas.width;
+ const maxLeft=Math.max(6,wrap.clientWidth-fb.offsetWidth-6);
+ fb.style.left=(sl+Math.min(maxLeft,Math.max(6,desiredLeft)))+"px";
+ const desiredTop=r.top-wr.top+selection.y*r.height/canvas.height-45;
+ fb.style.top=(st+Math.max(6,desiredTop))+"px";
  if(isText){closeOpacityPanel();updateSelectionResizeHandles();return}
  // 不透明度パネルは、選択範囲が変わった・貼り付け中・別画像になった場合は閉じる
  if(opacitySession&&(fl||!hasRange()||images[current]!==opacitySession.im||selKey()!==opacitySession.selKey))closeOpacityPanel();
@@ -2147,7 +3009,7 @@ function updateSelectionResizeHandles(){
  box.style.display="block";
  const ps={n:[left+w/2,top],s:[left+w/2,top+h],e:[left+w,top+h/2],w:[left,top+h/2],ne:[left+w,top],nw:[left,top],se:[left+w,top+h],sw:[left,top+h]};
  box.querySelectorAll(".selection-resize-handle").forEach(el=>{
-  const p=ps[el.dataset.dir];el.style.left=(p[0]-4.5)+"px";el.style.top=(p[1]-4.5)+"px";
+  const p=ps[el.dataset.dir];const hs=(el.offsetWidth||11)/2;el.style.left=(p[0]-hs)+"px";el.style.top=(p[1]-hs)+"px";
  });
 }
 function startSelectionResize(e,dir){
@@ -2220,6 +3082,7 @@ function onSelectionResizeUp(){
  c.imageSmoothingEnabled=selectionScaleQuality==="smooth";if(c.imageSmoothingEnabled)c.imageSmoothingQuality="high";
  c.drawImage(s.piece,target.x,target.y,target.w,target.h);
  im.modified=true;preview=null;selection=target;updateThumb(im);rebuildList();render();
+ if(window.__syncMobileSelectionButtons)window.__syncMobileSelectionButtons();
 }
 $("selectionResizeHandles").querySelectorAll(".selection-resize-handle").forEach(h=>h.addEventListener("pointerdown",e=>startSelectionResize(e,h.dataset.dir)));
 
@@ -2306,7 +3169,7 @@ $("resizeHandles").querySelectorAll(".resize-handle").forEach(h=>{
 $("cancelSel").onclick=()=>{
  if(floating){discardFloating();return}
  if(selectedText){finalizeFontPropertyEdit();selectedText=null;textDrag=null}
- selection=null;selectionScaleMode=false;hideFloat();setupTool();render()
+ selection=null;selectionScaleMode=false;hideFloat();setupTool();render();if(window.__syncMobileSelectionButtons)window.__syncMobileSelectionButtons();
 };
 $("confirmFloat").onclick=()=>commitFloating();
 // 範囲選択・文字の拡大縮小で共通の画質設定(なめらか / ドット感を保つ)
@@ -2325,7 +3188,7 @@ function setSelectionScaleQuality(v){
 $("selScaleQuality").addEventListener("change",e=>{setSelectionScaleQuality(e.target.value);e.target.blur();document.body.focus()});
 $("copySel").onclick=()=>{
  if(selectedText){copySelectedFont();return}
- if(!selection||!ensureImage())return;const im=images[current],n=document.createElement("canvas");n.width=selection.w;n.height=selection.h;n.getContext("2d").drawImage(im.canvas,selection.x,selection.y,selection.w,selection.h,0,0,selection.w,selection.h);clipboard=n;clipboardOrigin={x:selection.x,y:selection.y};$("status").textContent="コピーしました。Ctrl+Vで貼り付けできます";
+ if(!selection||!ensureImage())return;const im=images[current],n=document.createElement("canvas");const cpSel=floating?{x:floating.x,y:floating.y,w:floating.w,h:floating.h}:selection;n.width=cpSel.w;n.height=cpSel.h;if(floating)n.getContext("2d").drawImage(floating.piece,0,0);else n.getContext("2d").drawImage(im.canvas,cpSel.x,cpSel.y,cpSel.w,cpSel.h,0,0,cpSel.w,cpSel.h);clipboard=n;clipboardSnapshot=cloneCanvas(n);clipboardSnapshotData={w:n.width,h:n.height,data:new Uint8ClampedArray(n.getContext("2d").getImageData(0,0,n.width,n.height).data)};clipboardOrigin={x:cpSel.x,y:cpSel.y};window.__mobileLastCopyType="image";if(window.__syncMobilePasteButton)window.__syncMobilePasteButton();$("status").textContent="コピーしました。Ctrl+Vで貼り付けできます";
 };
 $("transparentSel").onclick=()=>modifySelection(false);
 $("outsideTransparent").onclick=()=>modifySelection(true);
@@ -2341,7 +3204,7 @@ function closeOpacityPanel(){
 }
 function openOpacityPanel(){
  if(!ensureImage()||floating||!hasRange())return;
- if(opacitySession){closeOpacityPanel();return} // もう一度押すと閉じる
+ if(opacitySession){finishSelOpacity();closeOpacityPanel();return} // もう一度押すと閉じる
  const im=images[current],reg=getRegion(im.canvas);
  if(!reg||!reg.w||!reg.h)return;
  endLiveSession(); // 明るさ・フィルター等のバー操作を確定してから始める
@@ -2378,7 +3241,6 @@ function finishSelOpacity(){
 }
 // 数値欄を編集中にボタンを押すと、先にblur→change→(効果バッジ表示でレイアウトが動く)→クリックが外れる、
 // という事態になり得るため、パネル内ボタンではフォーカス移動を起こさずにクリックだけ通す。
-["selOpacityReset","selOpacityClose"].forEach(id=>$(id).addEventListener("mousedown",e=>e.preventDefault()));
 $("opacitySel").onclick=openOpacityPanel;
 $("scaleSelection").onclick=()=>{
  if(!ensureImage()||!hasRange()||floating||selectedText)return;
@@ -2387,8 +3249,6 @@ $("scaleSelection").onclick=()=>{
  setupTool();
  render();
 };
-$("selOpacityClose").onclick=()=>{finishSelOpacity();closeOpacityPanel()};
-$("selOpacityReset").onclick=()=>{$("selOpacity").value=100;$("selOpacityVal").value=100;applySelOpacity(100);finishSelOpacity()};
 $("selOpacity").oninput=e=>{$("selOpacityVal").value=e.target.value;applySelOpacity(e.target.value)};
 $("selOpacity").onchange=finishSelOpacity;
 $("selOpacityVal").oninput=e=>{
@@ -2406,6 +3266,25 @@ function modifySelection(outside){
  if(!selection||!ensureImage())return;closeOpacityPanel();const im=images[current];pushHistory(im);recordGroup([im]);const x=im.canvas.getContext("2d"),d=x.getImageData(0,0,im.canvas.width,im.canvas.height);
  for(let y=0;y<im.canvas.height;y++)for(let xx=0;xx<im.canvas.width;xx++){const inside=xx>=selection.x&&xx<selection.x+selection.w&&y>=selection.y&&y<selection.y+selection.h;if(inside!==outside)d.data[(y*im.canvas.width+xx)*4+3]=0}
  x.putImageData(d,0,0);updateThumb(im);render();refreshOrder();
+}
+// 選択範囲だけを完全に削除(透明化)する。履歴は1操作として記録する。
+function deleteSelectedArea(){
+ if(floating){
+  discardFloating();
+  $("status").textContent="貼り付け中の選択範囲を削除しました";
+  if(window.__syncMobileSelectionButtons)window.__syncMobileSelectionButtons();
+  return true;
+ }
+ if(!hasRange()||!ensureImage())return false;
+ closeOpacityPanel();
+ const im=images[current],r=getRegion(im.canvas);
+ if(!r||!r.w||!r.h)return false;
+ pushHistory(im);recordGroup([im]);
+ im.canvas.getContext("2d").clearRect(r.x,r.y,r.w,r.h);
+ im.modified=true;updateThumb(im);render();refreshOrder();
+ if(window.__syncMobileSelectionButtons)window.__syncMobileSelectionButtons();
+ $("status").textContent=`選択範囲 ${r.w}×${r.h}px を削除しました`;
+ return true;
 }
 // 貼り付けた絵は「浮いた状態」で保持し、位置が確定するまで下の絵は消さない。
 // 確定(外側クリック・Enter・確定ボタン・ツール/画像切替など)した時に、その位置の真上へ張り付ける。
@@ -2426,16 +3305,22 @@ function discardFloating(){
  floating=null;floatDrag=null;selection=null;hideFloat();render();
 }
 function pasteClipboard(){
- if(!clipboard||!ensureImage())return;
+ // コピー元は「コピーした瞬間」のスナップショットだけを使用する。
+ // ここで現在のキャンバスや、直前に貼り付けた floating を読み直さない。
+ const source=clipboardSnapshotData?canvasFromState({w:clipboardSnapshotData.w,h:clipboardSnapshotData.h,data:clipboardSnapshotData.data}):((clipboardSnapshot||clipboard)?cloneCanvas(clipboardSnapshot||clipboard):null);
+ if(!source||!ensureImage())return;
+ // 重要: コピー元を完全に独立したCanvasへ確保してから、前回の貼り付けを確定する。
+ // これにより「前回貼り付けたもの＋選択範囲」が次の貼り付け元へ混入しない。
+ const frozenSource=cloneCanvas(source);
  endLiveSession();commitFloating();abortSelMove();
- const im=images[current],w=clipboard.width,h=clipboard.height;
+ const im=images[current],w=frozenSource.width,h=frozenSource.height;
  let x,y;
  if(lastCanvasPos){x=Math.round(lastCanvasPos.x-w/2);y=Math.round(lastCanvasPos.y-h/2)}
  else if(clipboardOrigin){x=clipboardOrigin.x;y=clipboardOrigin.y}
  else{x=0;y=0}
  x=w>=im.canvas.width?0:Math.max(0,Math.min(im.canvas.width-w,x));
  y=h>=im.canvas.height?0:Math.max(0,Math.min(im.canvas.height-h,y));
- floating={im,piece:cloneCanvas(clipboard),x,y,w,h};
+ floating={im,piece:frozenSource,x,y,w,h};
  selection={x,y,w,h};tool="select";document.querySelectorAll("[data-tool]").forEach(b=>b.classList.toggle("active",b.dataset.tool==="select"));setupTool();
  $("status").textContent="貼り付け中: ドラッグで移動 → 外側クリック/Enter/確定ボタンで確定 (Escでキャンセル)";
  render();
@@ -2581,6 +3466,96 @@ window.addEventListener("beforeunload",e=>{
 });
 
 setupTool();render();
+
+
+// --- モバイル/タブレット用: 画像プレビュー固定ペーストボタン ---
+(function setupMobilePasteButton(){
+  const wrapEl=document.querySelector(".canvas-wrap");
+  if(!wrapEl)return;
+  const actions=document.createElement("div");
+  actions.className="mobile-action-buttons";
+
+  const del=document.createElement("button");
+  del.type="button";
+  del.className="mobile-delete-button";
+  del.textContent="削除";
+  del.title="選択範囲だけを削除します";
+  del.addEventListener("click",()=>{
+    if(typeof deleteSelectedArea==="function")deleteSelectedArea();
+    sync();
+  });
+
+  const btn=document.createElement("button");
+  btn.type="button";
+  btn.className="mobile-paste-button";
+  btn.textContent="貼り付け";
+  btn.title="コピーした内容を貼り付けます";
+  btn.addEventListener("click",()=>{
+    if(window.__mobileLastCopyType==="font"&&typeof pasteFontClipboard==="function"){
+      pasteFontClipboard();
+    }else if(typeof pasteClipboard==="function"){
+      pasteClipboard();
+    }
+    sync();
+  });
+
+  actions.append(del,btn);
+  wrapEl.appendChild(actions);
+
+  const mq=window.matchMedia("(max-width:1100px)");
+  const sync=()=>{
+    const visible=mq.matches;
+    const hasSelection=typeof hasRange==="function"&&hasRange()&&!selecting&&!selectedText;
+    const hasFloating=!!floating;
+    const hasImageClipboard=typeof clipboard!=="undefined"&&!!clipboard;
+    const hasFontClipboard=typeof fontClipboard!=="undefined"&&!!fontClipboard;
+    const hasClipboard=hasImageClipboard||hasFontClipboard;
+
+    actions.style.display=visible&&(hasSelection||hasFloating||hasClipboard)?"flex":"none";
+    del.style.display=visible&&hasSelection?"block":"none";
+    btn.style.display=visible&&hasClipboard?"block":"none";
+    del.disabled=false;
+    btn.disabled=false;
+  };
+
+  const pinActions=()=>{actions.style.transform=`translate(${wrapEl.scrollLeft}px,${wrapEl.scrollTop}px)`};
+  wrapEl.addEventListener("scroll",pinActions,{passive:true});
+  window.addEventListener("resize",pinActions);
+  pinActions();
+  window.__syncMobilePasteButton=sync;
+  window.__syncMobileSelectionButtons=sync;
+  sync();
+})();
+
+// --- モバイル用: 画像一覧ドロワー ---
+(function setupMobileSidebar(){
+  const sidebar=document.querySelector(".sidebar");
+  const workspace=document.querySelector(".workspace");
+  if(!sidebar||!workspace)return;
+  const toggle=document.createElement("button");
+  toggle.type="button";
+  toggle.className="mobile-sidebar-toggle";
+  toggle.textContent="☰ 画像一覧";
+  toggle.setAttribute("aria-label","画像一覧を開く");
+  workspace.appendChild(toggle);
+  const mq=window.matchMedia("(max-width:700px)");
+  const sync=()=>{
+    if(!mq.matches){sidebar.classList.remove("mobile-open");toggle.classList.remove("is-open");toggle.style.display="none";return}
+    toggle.style.display="block";
+    toggle.classList.toggle("is-open",sidebar.classList.contains("mobile-open"));
+    toggle.textContent=sidebar.classList.contains("mobile-open")?"‹ 閉じる":"☰ 画像一覧";
+  };
+  const close=()=>{sidebar.classList.remove("mobile-open");sync()};
+  toggle.addEventListener("click",()=>{sidebar.classList.toggle("mobile-open");sync()});
+  const head=sidebar.querySelector(".sidebar-head");
+  if(head)head.addEventListener("click",e=>{
+    if(!mq.matches||e.target.closest("input"))return;
+    sidebar.classList.toggle("mobile-open");sync();
+  });
+  fileList.addEventListener("click",e=>{if(mq.matches&&e.target.closest(".thumb"))close()});
+  mq.addEventListener?.("change",sync);
+  sync();
+})();
 </script>
 </body>
 </html>
